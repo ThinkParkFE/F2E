@@ -61,6 +61,7 @@
                 'checkJsApi',
                 'onMenuShareTimeline',
                 'onMenuShareAppMessage',
+                'onMenuShareQQ',
                 'hideMenuItems',
                 'openLocation'
             ]
