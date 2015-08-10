@@ -1,9 +1,27 @@
 /**
  * url编码及解码
  */
-!(function() {
+(function (window,namespace,factory) {
     window.tp = window.tp || {};
-
+    window.tp[namespace] = factory(namespace,window);
+/////////////////////////// CommonJS /////////////////////////////////
+    if (typeof define === 'function' && (define.amd || define.cmd)) {
+        if (define.amd) {
+            // AMD 规范，for：requirejs
+            define(function () {
+                return factory(namespace,window);
+            });
+        } else if (define.cmd) {
+            // CMD 规范，for：seajs
+            define(function (require, exports, module) {
+                module.exports = factory(namespace,window);
+            });
+        }
+    }
+})(window,'url',function(namespace,window){
+    namespace={
+        version:'1.0.0'
+    };
     function str2asc(strstr) {
         return ("0" + strstr.charCodeAt(0).toString(16)).slice(-2);
     }
@@ -15,7 +33,7 @@
     /**
      * url编码
      */
-    window.tp.UrlEncode = function(str) {
+    namespace["encode"] = function(str) {
             var ret = "";
             var strSpecial = "!\"#$%&'()*+,/:;<=>?[]^`{|}~%";
             var tt = "";
@@ -40,7 +58,8 @@
         /**
          * url解码
          */
-    window.tp.UrlDecode = function(str) {
+        
+    namespace["decode"] = function(str) {
         var ret = "";
         for (var i = 0; i < str.length; i++) {
             var chr = str.charAt(i);
@@ -62,5 +81,5 @@
         return ret;
     }
 
-
-})();
+    return  namespace;
+});

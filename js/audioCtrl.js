@@ -1,15 +1,36 @@
 /**
  *音乐控制
  */
- !(function() {
-     window.tp = window.tp || {};
+
+(function (window,namespace,factory) {
+    window.tp = window.tp || {};
+    window.tp[namespace] = factory(namespace,window);
+/////////////////////////// CommonJS /////////////////////////////////
+    if (typeof define === 'function' && (define.amd || define.cmd)) {
+        if (define.amd) {
+            // AMD 规范，for：requirejs
+            define(function () {
+                return factory(namespace,window);
+            });
+        } else if (define.cmd) {
+            // CMD 规范，for：seajs
+            define(function (require, exports, module) {
+                module.exports = factory(namespace,window);
+            });
+        }
+    }
+})(window,'audio',function(namespace,window){
+    
+     namespace={
+        version:'1.0.0'
+     };
      var isiphone = !navigator.userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
      /**
       * audio 控制器
       * @param  {[type]} option audio属性
       * @return {[type]}        audio对象
       */
-     window.tp.audio = function(option) {
+     namespace['load'] = function(option) {
          var options_audio = {
              loop: true,
              preload: 'load',
@@ -18,20 +39,6 @@
              src: '',
              isload: false
          };
-
-         function extend(target, source) {
-             target = target || {};
-             var result = {};
-             for (var p in target) {
-                 if (source.hasOwnProperty(p)) {
-                     result[p] = source[p];
-                 } else {
-                     result[p] = target[p];
-                 }
-             }
-             return result;
-         }
-
          var opts = extend(options_audio, option);
 
          var _audio = new Audio();
@@ -57,6 +64,18 @@
          }
          return _audio;
      };
+      function extend(target, source) {
+        target = target || {};
+        var result = {};
+        for (var p in target) {
+            if (source.hasOwnProperty(p)) {
+                result[p] = source[p];
+            } else {
+                result[p] = target[p];
+            }
+        }
+        return result;
+    }
+    return  namespace;
+});
 
-
- })();

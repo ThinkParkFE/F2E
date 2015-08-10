@@ -4,9 +4,27 @@
  *  1.加载js后 请先执行init方法
  *  2.当前只能在socialpark.com.cn 域名下使用 其他域名使用无效(受公众账号设置限制)
  */
-!(function wxshare() {
+(function (window,namespace,factory) {
     window.tp = window.tp || {};
-    window.tp.wx = {};
+    window.tp[namespace] = factory(namespace,window);
+/////////////////////////// CommonJS /////////////////////////////////
+    if (typeof define === 'function' && (define.amd || define.cmd)) {
+        if (define.amd) {
+            // AMD 规范，for：requirejs
+            define(function () {
+                return factory(namespace,window);
+            });
+        } else if (define.cmd) {
+            // CMD 规范，for：seajs
+            define(function (require, exports, module) {
+                module.exports = factory(namespace,window);
+            });
+        }
+    }
+})(window,'wx',function(namespace,window){
+    namespace = {
+        version: '1.0.0'
+    };
     var shareData = {
         title: '',
         desc: '',
@@ -15,26 +33,26 @@
         success: function() {},
         cancel: function() {}
     };
-    var isDebug=!1;
+    var isDebug = !1;
     /**
      * 分享初始化
      * @param  {[type]} defaultshareData  默认分享文案
      * @param  {[type]} debug             调试是否打开 默认false
      */
-    window.tp.wx.init = function(defaultshareData,debug) {
+    namespace["init"] = function(defaultshareData, debug) {
         defaultshareData = defaultshareData || {};
         shareData = extend(shareData, defaultshareData);
-        debug=debug||isDebug;
-        isDebug=!!Debug;
+        debug = debug || isDebug;
+        isDebug = !!Debug;
         loadScript("http://res.wx.qq.com/open/js/jweixin-1.0.0.js", function() {
             var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
             loadScript(url);
         });
     }
 
-    window.tp.wx.config = function(d) {
+    namespace["config"] = function(d) {
         wx.config({
-            debug    : isDebug,
+            debug: isDebug,
             appId: d.appid,
             timestamp: d.timestamp,
             nonceStr: d.noncestr,
@@ -66,11 +84,11 @@
     }
 
 
-    window.tp.wx.setshare = function(d) {
+    namespace["setshare"] = function(d) {
         d = d || {};
         shareData = extend(shareData, d);
         wx.hideMenuItems({
-            menuList: ['menuItem:share:qq', 'menuItem:share:weiboApp', 'menuItem:share:facebook']
+            menuList: ['menuItem:share:weiboApp', 'menuItem:share:facebook']
         });
         wx.showMenuItems({
             menuList: ['menuItem:profile', 'menuItem:addContact']
@@ -90,7 +108,7 @@
                 shareData.cancel && shareData.cancel();
                 try {
                     _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                }
+                } catch (e) {}
             }
         });
         // 发送给指定微信好友
@@ -121,14 +139,13 @@
                 shareData.success && shareData.success();
                 try {
                     _hmt.push(['_trackEvent', "分享成功", '分享成功']);
-                }
-                c
+                } catch (e) {}
             },
             cancel: function() {
                 shareData.cancel && shareData.cancel();
                 try {
                     _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                }
+                } catch (e) {}
             }
         });
     }
@@ -165,5 +182,5 @@
         }
         return result;
     }
-
-})();
+    return  namespace;
+});

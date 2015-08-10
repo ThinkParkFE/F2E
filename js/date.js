@@ -1,33 +1,28 @@
  /**
   * 时间格式化 及时间差
   */
- !(function() {
-     window.tp = window.tp || {};
-     /**
-      * 时间差方法
-      * @param  {[type]} interval  差值 D:天 H:小时 M:分钟 S:秒 T:毫秒
-      * @param  {[type]} startdate 开始时间 2015-01-10
-      * @param  {[type]} enddate   结束时间 2015-04-12
-      * @return {[type]}           差值
-      */
-     window.tp.dateDiff = function(interval, startdate, enddate) {
-         var objInterval = {
-             'D': 1000 * 60 * 60 * 24,
-             'H': 1000 * 60 * 60,
-             'M': 1000 * 60,
-             'S': 1000,
-             'T': 1
-         };
-         interval = interval.toUpperCase();
-         var dt1 = new Date(Date.parse(startdate.replace(/-/g, '/')));
-         var dt2 = new Date(Date.parse(enddate.replace(/-/g, '/')));
-         try {
-             return Math.round((dt2.getTime() - dt1.getTime()) / objInterval[interval]);
-         } catch (e) {
-             return e.message;
-         }
-     }
-     /**
+(function (window,namespace,factory) {
+    window.tp = window.tp || {};
+    window.tp[namespace] = factory(namespace,window);
+/////////////////////////// CommonJS /////////////////////////////////
+    if (typeof define === 'function' && (define.amd || define.cmd)) {
+        if (define.amd) {
+            // AMD 规范，for：requirejs
+            define(function () {
+                return factory(namespace,window);
+            });
+        } else if (define.cmd) {
+            // CMD 规范，for：seajs
+            define(function (require, exports, module) {
+                module.exports = factory(namespace,window);
+            });
+        }
+    }
+})(window,'date',function(namespace,window){
+    namespace = {
+        version: '1.0.0'
+    };
+    /**
       * 时间格式化方法--对Date的扩展，将 Date 转化为指定格式的String
       * @param  {[type]} format  
       * 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符
@@ -60,4 +55,29 @@
          }
          return fmt;
      };
- })();
+    /**
+      * 时间差方法
+      * @param  {[type]} interval  差值 D:天 H:小时 M:分钟 S:秒 T:毫秒
+      * @param  {[type]} startdate 开始时间 2015-01-10
+      * @param  {[type]} enddate   结束时间 2015-04-12
+      * @return {[type]}           差值
+      */
+     namespace['diff'] = function(interval, startdate, enddate) {
+         var objInterval = {
+             'D': 1000 * 60 * 60 * 24,
+             'H': 1000 * 60 * 60,
+             'M': 1000 * 60,
+             'S': 1000,
+             'T': 1
+         };
+         interval = interval.toUpperCase();
+         var dt1 = new Date(Date.parse(startdate.replace(/-/g, '/')));
+         var dt2 = new Date(Date.parse(enddate.replace(/-/g, '/')));
+         try {
+             return Math.round((dt2.getTime() - dt1.getTime()) / objInterval[interval]);
+         } catch (e) {
+             return e.message;
+         }
+     }
+    return  namespace;
+});
