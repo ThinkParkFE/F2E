@@ -1,17 +1,50 @@
+//全局初始化样式
 .reset() {
-  body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td {  margin: 0;  padding: 0;  }
-  a, img {  -webkit-touch-callout: none; /*禁止长按链接与图片弹出菜单*/  }
-  ul, ol, li {  list-style: none; }
-  fieldset, img { border:none; }
-  select, input { vertical-align:middle; }
-  select, input, textarea { font-size:12px; margin:0; }
-  button, button:focus, input:focus { outline: none;  border: none;  }
-  input[type="text"], input[type="password"],input[type=button],textarea,button { outline-style:none; -webkit-appearance:none; }
-  input::-moz-focus-inner { border:none; padding:0; }
-  input,textarea{background: none; border: none;}
-  textarea { resize:none; }
-  a {  text-decoration: none;  }
-  a,label {outline:none;}
+  body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td {
+    margin: 0;
+    padding: 0;
+  }
+  a, img {
+    -webkit-touch-callout: none; /*禁止长按链接与图片弹出菜单*/
+  }
+  ul, ol, li {
+    list-style: none;
+  }
+  fieldset, img {
+    border: none;
+  }
+  select, input {
+    vertical-align: middle;
+  }
+  select, input, textarea {
+    font-size: 12px;
+    margin: 0;
+  }
+  button, button:focus, input:focus {
+    outline: none;
+    border: none;
+  }
+  input[type="text"], input[type="password"], input[type=button], textarea, button {
+    outline-style: none;
+    -webkit-appearance: none;
+  }
+  input::-moz-focus-inner {
+    border: none;
+    padding: 0;
+  }
+  input, textarea {
+    background: none;
+    border: none;
+  }
+  textarea {
+    resize: none;
+  }
+  a {
+    text-decoration: none;
+  }
+  a, label {
+    outline: none;
+  }
   .hide {
     display: none;
   }
@@ -21,7 +54,11 @@
   .show {
     display: block;
   }
-  audio {  width: 0;  height: 0;  display: none;  }
+  audio {
+    width: 0;
+    height: 0;
+    display: none;
+  }
 }
 
 //清除浮动
@@ -51,69 +88,77 @@
   width: 100% - @substract;
 }
 
-
-//通用写法
+//通用宽度设置
 .getwidth(@width) {
   width: percentage(@width/750);
 }
 
+//通用高度度设置
 .getheight(@height) {
   height: percentage(@height/1208);
 }
 
-
 //三角形
-.triangle (top,@w:5px,@color:#ccc){
-  border-style:solid dashed dashed dashed;
-  border-color:@color transparent transparent transparent;
-  border-width:@w;
+.triangle (top,@w:5px,@color:#ccc) {
+  border-style: solid dashed dashed dashed;
+  border-color: @color transparent transparent transparent;
+  border-width: @w;
 }
-.triangle (right,@w:5px,@color:#ccc){
-  border-style:dashed solid dashed dashed;
-  border-color:transparent @color transparent transparent;
-  border-width:@w;
+
+.triangle (right,@w:5px,@color:#ccc) {
+  border-style: dashed solid dashed dashed;
+  border-color: transparent @color transparent transparent;
+  border-width: @w;
 }
-.triangle (bottom,@w:5px,@color:#ccc){
-  border-style:dashed dashed solid dashed;
-  border-color:transparent transparent @color transparent;
-  border-width:@w;
+
+.triangle (bottom,@w:5px,@color:#ccc) {
+  border-style: dashed dashed solid dashed;
+  border-color: transparent transparent @color transparent;
+  border-width: @w;
 }
-.triangle (left,@w:5px,@color:#ccc){
-  border-style:dashed dashed dashed solid;
-  border-color:transparent transparent transparent @color;
-  border-width:@w;
+
+.triangle (left,@w:5px,@color:#ccc) {
+  border-style: dashed dashed dashed solid;
+  border-color: transparent transparent transparent @color;
+  border-width: @w;
 }
-.triangle (@_,@w:5px,@color:#ccc){
-  .triangle-compatible();
-}
-//边框附加内容
-.triangle-compatible()
-{
-  width: 0; height: 0; overflow:hidden;
-}
-//单独方向
-.triangle-b(@w:5px,@color:#ccc){
-  border-style:solid dashed dashed dashed;
-  border-color:@color transparent transparent transparent;
-  border-width:@w;
-  .triangle-compatible();
-}
-.triangle-l(@w:5px,@color:#ccc){
-  border-style:dashed solid dashed dashed;
-  border-color:transparent @color transparent transparent;
-  border-width:@w;
-  .triangle-compatible();
-}
-.triangle-t(@w:5px,@color:#ccc){
-  border-style:dashed dashed solid dashed;
-  border-color:transparent transparent @color transparent;
-  border-width:@w;
-  .triangle-compatible();
-}
-.triangle-r(@w:5px,@color:#ccc){
-  border-style:dashed dashed dashed solid;
-  border-color:transparent transparent transparent @color;
-  border-width:@w;
+
+.triangle (@_,@w:5px,@color:#ccc) {
   .triangle-compatible();
 }
 
+//边框附加内容
+.triangle-compatible() {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+//单独方向
+.triangle-b(@w:5px,@color:#ccc) {
+  border-style: solid dashed dashed dashed;
+  border-color: @color transparent transparent transparent;
+  border-width: @w;
+  .triangle-compatible();
+}
+
+.triangle-l(@w:5px,@color:#ccc) {
+  border-style: dashed solid dashed dashed;
+  border-color: transparent @color transparent transparent;
+  border-width: @w;
+  .triangle-compatible();
+}
+
+.triangle-t(@w:5px,@color:#ccc) {
+  border-style: dashed dashed solid dashed;
+  border-color: transparent transparent @color transparent;
+  border-width: @w;
+  .triangle-compatible();
+}
+
+.triangle-r(@w:5px,@color:#ccc) {
+  border-style: dashed dashed dashed solid;
+  border-color: transparent transparent transparent @color;
+  border-width: @w;
+  .triangle-compatible();
+}

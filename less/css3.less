@@ -1,9 +1,7 @@
-
 //css3
-.transform(...)  {
+.transform(...) {
   transform: @arguments;
 }
-
 
 .animation-name(@name: none, ...) {
   animation-name: @names;
@@ -12,12 +10,15 @@
 .animation-duration(@duration:1s) {
   animation-duration: @duration;
 }
-.animation-timing-function(@timing-function: ease, ...)  {
+
+.animation-timing-function(@timing-function: ease, ...) {
   animation-timing-function: @timing-functions;
 }
+
 .animation-delay(@delay: 0s, ...) {
   animation-delay: @delays;
 }
+
 .animation (...) {
   animation: @arguments;
 }
@@ -59,28 +60,32 @@
   -o-transform: rotate(@degrees);
   transform: rotate(@degrees);
 }
-.rotate3d(@x: 0, @y: 0, @z: 0, @degrees: 0deg){
+
+.rotate3d(@x: 0, @y: 0, @z: 0, @degrees: 0deg) {
   -webkit-transform: rotate3d(@arguments);
   -moz-transform: rotate3d(@arguments);
   -ms-transform: rotate3d(@arguments);
   -o-transform: rotate3d(@arguments);
   transform: rotate3d(@arguments);
 }
-.rotateX(@degrees: 0deg){
+
+.rotateX(@degrees: 0deg) {
   -webkit-transform: rotateX(@arguments);
   -moz-transform: rotateX(@arguments);
   -ms-transform: rotateX(@arguments);
   -o-transform: rotateX(@arguments);
   transform: rotateX(@arguments);
 }
-.rotateY(@degrees: 0deg){
+
+.rotateY(@degrees: 0deg) {
   -webkit-transform: rotateY(@arguments);
   -moz-transform: rotateY(@arguments);
   -ms-transform: rotateY(@arguments);
   -o-transform: rotateY(@arguments);
   transform: rotateY(@arguments);
 }
-.rotateZ(@degrees: 0deg){
+
+.rotateZ(@degrees: 0deg) {
   -webkit-transform: rotateZ(@arguments);
   -moz-transform: rotateZ(@arguments);
   -ms-transform: rotateZ(@arguments);
@@ -96,6 +101,7 @@
   -o-transform: scaleX(@x) scaleY(@y);
   transform: scaleX(@x) scaleY(@y);
 }
+
 .scaleX(@x: 0) {
   -webkit-transform: scaleX(@arguments);
   -moz-transform: scaleX(@arguments);
@@ -103,6 +109,7 @@
   -o-transform: scaleX(@arguments);
   transform: scaleX(@arguments);
 }
+
 .scaleY(@y: 0) {
   -webkit-transform: scaleY(@arguments);
   -moz-transform: scaleY(@arguments);
@@ -119,27 +126,31 @@
   -o-transform: translate(@arguments);
   transform: translate(@arguments);
 }
+
 .translate3d(@x: 0px, @y: 0px, @z: 0px) {
   -webkit-transform: translate3d(@arguments);
   -moz-transform: translate3d(@arguments);
   -o-transform: translate3d(@arguments);
   transform: translate3d(@arguments);
 }
-.translateX(@x: 0px){
+
+.translateX(@x: 0px) {
   -webkit-transform: translateX(@x);
   -moz-transform: translateX(@x);
   -ms-transform: translateX(@x);
   -o-transform: translateX(@x);
   transform: translateX(@x);
 }
-.translateY(@y: 0px){
+
+.translateY(@y: 0px) {
   -webkit-transform: translateY(@y);
   -moz-transform: translateY(@y);
   -ms-transform: translateY(@y);
   -o-transform: translateY(@y);
   transform: translateY(@y);
 }
-.translateZ(@z: 0px){
+
+.translateZ(@z: 0px) {
   -webkit-transform: translateZ(@z);
   -moz-transform: translateZ(@z);
   -ms-transform: translateZ(@z);
@@ -156,6 +167,7 @@
   transform: skew(@arguments);
   -webkit-backface-visibility: hidden;
 }
+
 .skewX(@x: 0deg) {
   -webkit-transform: skewX(@x);
   -moz-transform: skewX(@x);
@@ -165,6 +177,7 @@
   -webkit-backface-visibility: hidden;
   //Webkit gives a pixelated edge. This can be resolved by adding the following line to the mixin. -webkit-backface-visibility: hidden;
 }
+
 .skewY(@y: 0deg) {
   -webkit-transform: skewY(@y);
   -moz-transform: skewY(@y);
@@ -181,19 +194,19 @@
 // * 详细可以查看 http://www.w3.org/TR/css3-transitions/
 // */
 
-
 .transition(@transition) {
   -webkit-transition: @transition;
   -moz-transition: @transition;
   -o-transition: @transition;
   transition: @transition;
 }
-.cs3move(@who:all,@operation:ease,@timer:.3s){
-  -webkit-transition:@who @operation @timer;
-  -moz-transition:@who @operation @timer;
-  -ms-transition:@who @operation @timer;
-  -o-transition:@who @operation @timer;
-  transition:@who @operation @timer;
+
+.cs3move(@who:all,@operation:ease,@timer:.3s) {
+  -webkit-transition: @who @operation @timer;
+  -moz-transition: @who @operation @timer;
+  -ms-transition: @who @operation @timer;
+  -o-transition: @who @operation @timer;
+  transition: @who @operation @timer;
 }
 
 //**
@@ -211,7 +224,7 @@
 // * 持续时间
 // * @type {time} 如0s
 // */
-.transition-duration(@transition-duration: 0s){
+.transition-duration(@transition-duration: 0s) {
   -webkit-transition-duration: @transition-duration;
   -moz-transition-duration: @transition-duration;
   -o-transition-duration: @transition-duration;
@@ -222,7 +235,7 @@
 // * 需要transition的属性
 // * @type: {css-property}
 // */
-.transition-property(@transition-property){
+.transition-property(@transition-property) {
   -webkit-transition-property: @transition-property;
   -moz-transition-property: @transition-property;
   -o-transition-property: @transition-property;
@@ -239,7 +252,7 @@
 // * }
 // * @transition-timing: ease          [description]
 // */
-.transition-timing-function(@transition-timing: ease){
+.transition-timing-function(@transition-timing: ease) {
   -webkit-transition-timing-function: @transition-timing;
   -moz-transition-timing-function: @transition-timing;
   -o-transition-timing-function: @transition-timing;
