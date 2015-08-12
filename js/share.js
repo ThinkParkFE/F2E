@@ -23,7 +23,7 @@
     }
 })(window,'wx',function(namespace,window){
     namespace = {
-        version: '1.0.0'
+        version: '1.0.1'
     };
     var shareData = {
         title: '',
@@ -43,7 +43,7 @@
         defaultshareData = defaultshareData || {};
         shareData = extend(shareData, defaultshareData);
         debug = debug || isDebug;
-        isDebug = !!Debug;
+        isDebug = !!debug;
         loadScript("http://res.wx.qq.com/open/js/jweixin-1.0.0.js", function() {
             var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
             loadScript(url);
