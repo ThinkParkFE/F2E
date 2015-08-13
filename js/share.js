@@ -24,7 +24,7 @@
     }
 })(window, 'wx', function(namespace, window) {
     namespace = {
-        version: '1.0.2'
+        version: '1.0.3'
     };
     var shareData = {
         title: '',
@@ -84,7 +84,7 @@
                     'openLocation'
                 ],
                 success: function checkJsApisuccess(res) {
-                    setshare();
+                    namespace.setshare();
                 }
             });
         });
