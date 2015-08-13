@@ -20,7 +20,7 @@
     }
 })(window, 'url', function (namespace, window) {
     namespace = {
-        version: '1.0.0'
+        version: '1.0.1'
     };
     function str2asc(strstr) {
         return ("0" + strstr.charCodeAt(0).toString(16)).slice(-2);
@@ -33,7 +33,7 @@
     /**
      * url编码
      */
-    namespace["encode"] = function (str) {
+    namespace.encode= function (str) {
         var ret = "";
         var strSpecial = "!\"#$%&'()*+,/:;<=>?[]^`{|}~%";
         var tt = "";
@@ -59,7 +59,7 @@
      * url解码
      */
 
-    namespace["decode"] = function (str) {
+    namespace.decode = function (str) {
         var ret = "";
         for (var i = 0; i < str.length; i++) {
             var chr = str.charAt(i);

@@ -25,7 +25,7 @@
 })(window, 'audio', function (namespace, window) {
 
     namespace = {
-        version: '1.0.0'
+        version: '1.0.1'
     };
     var isiphone = !navigator.userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
     /**
@@ -33,7 +33,7 @@
      * @param  {[type]} option audio属性
      * @return {[type]}        audio对象
      */
-    namespace['load'] = function (option) {
+    namespace.load = function (option) {
         var options_audio = {
             loop: true,
             preload: 'load',

@@ -21,7 +21,7 @@
     }
 })(window, 'date', function (namespace, window) {
     namespace = {
-        version: '1.0.0'
+        version: '1.0.1'
     };
     /**
      * 时间格式化方法--对Date的扩展，将 Date 转化为指定格式的String
@@ -63,7 +63,7 @@
      * @param  {[type]} enddate   结束时间 2015-04-12
      * @return {[type]}           差值
      */
-    namespace['diff'] = function (interval, startdate, enddate) {
+    namespace.diff = function (interval, startdate, enddate) {
         var objInterval = {
             'D': 1000 * 60 * 60 * 24,
             'H': 1000 * 60 * 60,

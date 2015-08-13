@@ -5,55 +5,58 @@
  *  2.当前只能在socialpark.com.cn 域名下使用 其他域名使用无效(受公众账号设置限制)
  *  todo  使用AMD或者CMD 会出错 等待下一版调整
  */
-(function (window, namespace, factory) {
+(function(window, namespace, factory) {
     window.tp = window.tp || {};
     window.tp[namespace] = factory(namespace, window);
-/////////////////////////// CommonJS /////////////////////////////////
+    /////////////////////////// CommonJS /////////////////////////////////
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs
-            define(function () {
+            define(function() {
                 return factory(namespace, window);
             });
         } else if (define.cmd) {
             // CMD 规范，for：seajs
-            define(function (require, exports, module) {
+            define(function(require, exports, module) {
                 module.exports = factory(namespace, window);
             });
         }
     }
-})(window, 'wx', function (namespace, window) {
+})(window, 'wx', function(namespace, window) {
     namespace = {
-        version: '1.0.1'
+        version: '1.0.2'
     };
     var shareData = {
         title: '',
         desc: '',
         link: '',
         imgUrl: '',
-        success: function () {
-        },
-        cancel: function () {
-        }
+        success: function() {},
+        cancel: function() {}
     };
-    var isDebug = !1;
+    var isDebug = false;
     /**
      * 分享初始化
      * @param  {[type]} defaultshareData  默认分享文案
      * @param  {[type]} debug             调试是否打开 默认false
      */
-    namespace["init"] = function (defaultshareData, debug) {
+    namespace.init = function(defaultshareData, debug) {
         defaultshareData = defaultshareData || {};
         shareData = extend(shareData, defaultshareData);
         debug = debug || isDebug;
         isDebug = !!debug;
-        loadScript("http://res.wx.qq.com/open/js/jweixin-1.0.0.js", function () {
-            var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
-            loadScript(url);
-        });
+        var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
+        if (window.wx) {
+            loadScript(url, null);
+        } else {
+            loadScript("http://res.wx.qq.com/open/js/jweixin-1.0.0.js", function() {
+                loadScript(url, null);
+            });
+        }
+
     };
 
-    namespace["config"] = function (d) {
+    namespace.config = function(d) {
         wx.config({
             debug: isDebug,
             appId: d.appid,
@@ -70,7 +73,7 @@
             ]
         });
 
-        wx.ready(function () {
+        wx.ready(function() {
             wx.checkJsApi({
                 jsApiList: [
                     'getNetworkType',
@@ -88,7 +91,7 @@
     };
 
 
-    namespace["setshare"] = function (d) {
+    namespace.setshare = function(d) {
         d = d || {};
         shareData = extend(shareData, d);
         wx.hideMenuItems({
@@ -102,19 +105,17 @@
             title: shareData.title,
             link: shareData.link,
             imgUrl: shareData.imgUrl,
-            success: function () {
+            success: function() {
                 shareData.success && shareData.success();
                 try {
                     _hmt.push(['_trackEvent', "分享成功", '分享到朋友圈']);
-                } catch (e) {
-                }
+                } catch (e) {}
             },
-            cancel: function () {
+            cancel: function() {
                 shareData.cancel && shareData.cancel();
                 try {
                     _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                } catch (e) {
-                }
+                } catch (e) {}
             }
         });
         // 发送给指定微信好友
@@ -123,19 +124,17 @@
             desc: shareData.desc,
             link: shareData.link,
             imgUrl: shareData.imgUrl,
-            success: function () {
+            success: function() {
                 shareData.success && shareData.success();
                 try {
                     _hmt.push(['_trackEvent', "分享成功", '分享给好友']);
-                } catch (e) {
-                }
+                } catch (e) {}
             },
-            cancel: function () {
+            cancel: function() {
                 shareData.cancel && shareData.cancel();
                 try {
                     _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                } catch (e) {
-                }
+                } catch (e) {}
             }
         });
         wx.onMenuShareQQ({
@@ -143,19 +142,17 @@
             desc: shareData.desc, // 分享描述
             link: shareData.link, // 分享链接
             imgUrl: shareData.imgUrl, // 分享图标
-            success: function () {
+            success: function() {
                 shareData.success && shareData.success();
                 try {
                     _hmt.push(['_trackEvent', "分享成功", '分享成功']);
-                } catch (e) {
-                }
+                } catch (e) {}
             },
-            cancel: function () {
+            cancel: function() {
                 shareData.cancel && shareData.cancel();
                 try {
                     _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                } catch (e) {
-                }
+                } catch (e) {}
             }
         });
     };
@@ -164,7 +161,7 @@
         var script = document.createElement("script");
         script.type = "text/javascript";
         if (script.readyState) { //IE 
-            script.onreadystatechange = function () {
+            script.onreadystatechange = function() {
                 if (script.readyState == "loaded" ||
                     script.readyState == "complete") {
                     script.onreadystatechange = null;
@@ -172,8 +169,8 @@
                 }
             };
         } else { //Others: Firefox, Safari, Chrome, and Opera 
-            script.onload = function () {
-                callback();
+            script.onload = function() {
+                callback && callback();
             };
         }
         script.src = url;
