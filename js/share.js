@@ -24,7 +24,7 @@
     }
 })(window, 'wx', function(namespace, window) {
     namespace = {
-        version: '1.0.3'
+        version: '1.0.4'
     };
     var shareData = {
         title: '',
@@ -93,7 +93,7 @@
 
     namespace.setshare = function(d) {
         d = d || {};
-        shareData = extend(shareData, d);
+       var currShareData = extend(shareData, d);
         wx.hideMenuItems({
             menuList: ['menuItem:share:weiboApp', 'menuItem:share:facebook']
         });
@@ -102,17 +102,17 @@
         });
         // 分享到微信朋友圈
         wx.onMenuShareTimeline({
-            title: shareData.title,
-            link: shareData.link,
-            imgUrl: shareData.imgUrl,
+            title: currShareData.title,
+            link: currShareData.link,
+            imgUrl: currShareData.imgUrl,
             success: function() {
-                shareData.success && shareData.success();
+                currShareData.success && currShareData.success();
                 try {
                     _hmt.push(['_trackEvent', "分享成功", '分享到朋友圈']);
                 } catch (e) {}
             },
             cancel: function() {
-                shareData.cancel && shareData.cancel();
+                currShareData.cancel && currShareData.cancel();
                 try {
                     _hmt.push(['_trackEvent', "取消分享", '取消分享']);
                 } catch (e) {}
@@ -120,36 +120,36 @@
         });
         // 发送给指定微信好友
         wx.onMenuShareAppMessage({
-            title: shareData.title,
-            desc: shareData.desc,
-            link: shareData.link,
-            imgUrl: shareData.imgUrl,
+            title: currShareData.title,
+            desc: currShareData.desc,
+            link: currShareData.link,
+            imgUrl: currShareData.imgUrl,
             success: function() {
-                shareData.success && shareData.success();
+                currShareData.success && currShareData.success();
                 try {
                     _hmt.push(['_trackEvent', "分享成功", '分享给好友']);
                 } catch (e) {}
             },
             cancel: function() {
-                shareData.cancel && shareData.cancel();
+                currShareData.cancel && currShareData.cancel();
                 try {
                     _hmt.push(['_trackEvent', "取消分享", '取消分享']);
                 } catch (e) {}
             }
         });
         wx.onMenuShareQQ({
-            title: shareData.title, // 分享标题
-            desc: shareData.desc, // 分享描述
-            link: shareData.link, // 分享链接
-            imgUrl: shareData.imgUrl, // 分享图标
+            title: currShareData.title, // 分享标题
+            desc: currShareData.desc, // 分享描述
+            link: currShareData.link, // 分享链接
+            imgUrl: currShareData.imgUrl, // 分享图标
             success: function() {
-                shareData.success && shareData.success();
+                currShareData.success && currShareData.success();
                 try {
                     _hmt.push(['_trackEvent', "分享成功", '分享成功']);
                 } catch (e) {}
             },
             cancel: function() {
-                shareData.cancel && shareData.cancel();
+                currShareData.cancel && currShareData.cancel();
                 try {
                     _hmt.push(['_trackEvent', "取消分享", '取消分享']);
                 } catch (e) {}
