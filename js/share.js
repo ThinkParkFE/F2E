@@ -68,20 +68,78 @@
                 'onMenuShareTimeline',
                 'onMenuShareAppMessage',
                 'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
                 'hideMenuItems',
-                'openLocation'
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onRecordEnd',
+                'playVoice',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard'
             ]
         });
 
         wx.ready(function() {
             wx.checkJsApi({
                 jsApiList: [
-                    'getNetworkType',
-                    'previewImage',
-                    'onMenuShareAppMessage',
+                    'checkJsApi',
                     'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
                     'onMenuShareQQ',
-                    'openLocation'
+                    'onMenuShareWeibo',
+                    'onMenuShareQZone',
+                    'hideMenuItems',
+                    'showMenuItems',
+                    'hideAllNonBaseMenuItem',
+                    'showAllNonBaseMenuItem',
+                    'translateVoice',
+                    'startRecord',
+                    'stopRecord',
+                    'onRecordEnd',
+                    'playVoice',
+                    'pauseVoice',
+                    'stopVoice',
+                    'uploadVoice',
+                    'downloadVoice',
+                    'chooseImage',
+                    'previewImage',
+                    'uploadImage',
+                    'downloadImage',
+                    'getNetworkType',
+                    'openLocation',
+                    'getLocation',
+                    'hideOptionMenu',
+                    'showOptionMenu',
+                    'closeWindow',
+                    'scanQRCode',
+                    'chooseWXPay',
+                    'openProductSpecificView',
+                    'addCard',
+                    'chooseCard',
+                    'openCard'
                 ],
                 success: function checkJsApisuccess(res) {
                     namespace.setshare();
@@ -93,7 +151,7 @@
 
     namespace.setshare = function(d) {
         d = d || {};
-       var currShareData = extend(shareData, d);
+        var currShareData = extend(shareData, d);
         wx.hideMenuItems({
             menuList: ['menuItem:share:weiboApp', 'menuItem:share:facebook']
         });
