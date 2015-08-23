@@ -9,20 +9,20 @@
         if (define.amd) {
             // AMD 规范，for：requirejs
             define(function () {
-                return factory(namespace, window);
+                return factory();
             });
         } else if (define.cmd) {
             // CMD 规范，for：seajs
             define(function (require, exports, module) {
-                module.exports = factory(namespace, window);
+                module.exports = factory();
             });
         }
     }else{
         window.tp = window.tp || {};
-        window.tp[namespace] = factory(namespace, window);
+        window.tp[namespace] = factory();
     }
-})(window, 'url', function (namespace, window) {
-    namespace = {
+})(window, 'url', function () {
+    var url = {
         version: '1.0.2'
     };
     function str2asc(strstr) {
@@ -32,7 +32,7 @@
     function asc2str(ascasc) {
         return String.fromCharCode(ascasc);
     }
-    namespace.queryParams = (function () {
+    url.queryParams = (function () {
         var regExp = /(?:\?|&)?(\w+)=([^&=]*)/gi;
         var url = window.location.href.split('#')[0];
         var result, params = {};
@@ -44,7 +44,7 @@
     /**
      * url编码
      */
-    namespace.encode= function (str) {
+    url.encode= function (str) {
         var ret = "";
         var strSpecial = "!\"#$%&'()*+,/:;<=>?[]^`{|}~%";
         var tt = "";
@@ -70,7 +70,7 @@
      * url解码
      */
 
-    namespace.decode = function (str) {
+    url.decode = function (str) {
         var ret = "";
         for (var i = 0; i < str.length; i++) {
             var chr = str.charAt(i);
@@ -92,5 +92,5 @@
         return ret;
     };
 
-    return namespace;
+    return url;
 });

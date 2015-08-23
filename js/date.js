@@ -9,20 +9,20 @@
         if (define.amd) {
             // AMD 规范，for：requirejs
             define(function () {
-                return factory(namespace, window);
+                return factory();
             });
         } else if (define.cmd) {
             // CMD 规范，for：seajs
             define(function (require, exports, module) {
-                module.exports = factory(namespace, window);
+                module.exports = factory();
             });
         }
     }else{
         window.tp = window.tp || {};
-        window.tp[namespace] = factory(namespace, window);
+        window.tp[namespace] = factory();
     }
-})(window, 'date', function (namespace, window) {
-    namespace = {
+})(window, 'date', function () {
+    var dataCtrl = {
         version: '1.0.1'
     };
     /**
@@ -65,7 +65,7 @@
      * @param  {[type]} enddate   结束时间 2015-04-12
      * @return {[type]}           差值
      */
-    namespace.diff = function (interval, startdate, enddate) {
+    dataCtrl.diff = function (interval, startdate, enddate) {
         var objInterval = {
             'D': 1000 * 60 * 60 * 24,
             'H': 1000 * 60 * 60,
@@ -82,5 +82,5 @@
             return e.message;
         }
     };
-    return namespace;
+    return dataCtrl;
 });

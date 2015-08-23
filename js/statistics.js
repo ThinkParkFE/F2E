@@ -7,24 +7,24 @@
         if (define.amd) {
             // AMD 规范，for：requirejs
             define(function () {
-                return factory(namespace, window);
+                return factory();
             });
         } else if (define.cmd) {
             // CMD 规范，for：seajs
             define(function (require, exports, module) {
-                module.exports = factory(namespace, window);
+                module.exports = factory();
             });
         }
     }else{
         window.tp = window.tp || {};
-        window.tp[namespace] = factory(namespace, window);
+        window.tp[namespace] = factory();
     }
-})(window, 'tongji', function (namespace, window) {
+})(window, 'tongji', function () {
     window._hmt = window._hmt || [];
-    namespace = {
+    var baidutongji = {
         version: "1.0.2"
     };
-    namespace.init = function (BaiduTongjiSiteID) {
+    baidutongji.init = function (BaiduTongjiSiteID) {
         if (!BaiduTongjiSiteID) {
             return;
         }
@@ -33,5 +33,5 @@
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     };
-    return namespace;
+    return baidutongji;
 });

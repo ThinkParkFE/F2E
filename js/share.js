@@ -10,20 +10,20 @@
         if (define.amd) {
             // AMD 规范，for：requirejs
             define(function () {
-                return factory(namespace, window);
+                return factory();
             });
         } else if (define.cmd) {
             // CMD 规范，for：seajs
             define(function (require, exports, module) {
-                module.exports = factory(namespace, window);
+                module.exports = factory();
             });
         }
     } else {
         window.tp = window.tp || {};
-        window.tp[namespace] = factory(namespace, window);
+        window.tp[namespace] = factory();
     }
-})(window, 'wx', function (namespace, window) {
-    namespace = {
+})(window, 'wx', function () {
+    var WX = {
         version: '1.0.5'
     };
     var shareData = {
@@ -43,13 +43,13 @@
      * @param  {[type]} callback          初始化成功后回调函数
      * @param  {[type]} debug             调试是否打开 默认false
      */
-    namespace.init = function (defaultshareData, callback, debug) {
+    WX.init = function (defaultshareData, callback, debug) {
         defaultshareData = defaultshareData || {};
         shareData = extend(shareData, defaultshareData);
         debug = debug || isDebug;
         callback = typeof(callback) === "function" ? callback : null;
         isDebug = !!debug;
-        var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
+        var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.WX.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
         if (window.wx) {
             loadScript(url, callback);
         } else {
@@ -57,8 +57,8 @@
                 loadScript(url, callback);
             });
         }
-    }
-    namespace.config = function (d) {
+    };
+    WX.config = function (d) {
         wx.config({
             debug: isDebug,
             appId: d.appid,
@@ -151,7 +151,7 @@
     };
 
 
-    namespace.setshare = function (d) {
+    WX.setshare = function (d) {
         d = d || {};
         var currShareData = extend(shareData, d);
         wx.hideMenuItems({
@@ -231,12 +231,12 @@
                 if (script.readyState == "loaded" ||
                     script.readyState == "complete") {
                     script.onreadystatechange = null;
-                    callback();
+                    typeof (callback)==="function"&&callback();
                 }
             };
         } else { //Others: Firefox, Safari, Chrome, and Opera 
             script.onload = function () {
-                callback && callback();
+                typeof (callback)==="function"&&callback();
             };
         }
         script.src = url;
@@ -256,5 +256,5 @@
         return result;
     }
 
-    return namespace;
+    return WX;
 });

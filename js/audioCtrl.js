@@ -10,22 +10,22 @@
         if (define.amd) {
             // AMD 规范，for：requirejs
             define(function () {
-                return factory(namespace, window);
+                return factory();
             });
         } else if (define.cmd) {
             // CMD 规范，for：seajs
             define(function (require, exports, module) {
-                module.exports = factory(namespace, window);
+                module.exports = factory();
             });
         }
     }else{
         window.tp = window.tp || {};
-        window.tp[namespace] = factory(namespace, window);
+        window.tp[namespace] = factory();
     }
-})(window, 'audio', function (namespace, window) {
+})(window, 'audio', function () {
 
-    namespace = {
-        version: '1.0.1'
+    var audio = {
+        version: '1.0.2'
     };
     var isiphone = !navigator.userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
     /**
@@ -33,7 +33,7 @@
      * @param option     audio属性
      * @returns {Audio}  audio对象
      */
-    namespace.load = function (option) {
+    audio.load = function (option) {
         var options_audio = {
             loop: true,
             preload: 'load',
@@ -72,6 +72,6 @@
         return result;
     }
 
-    return namespace;
+    return audio;
 });
 
