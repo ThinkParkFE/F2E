@@ -24,7 +24,7 @@
     }
 })(window, 'wx', function () {
     var WX = {
-        version: '1.0.5'
+        version: '1.0.6'
     };
     var shareData = {
         title: '',
@@ -49,7 +49,7 @@
         debug = debug || isDebug;
         callback = typeof(callback) === "function" ? callback : null;
         isDebug = !!debug;
-        var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.WX.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
+        var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
         if (window.wx) {
             loadScript(url, callback);
         } else {
@@ -59,6 +59,7 @@
         }
     };
     WX.config = function (d) {
+        if(d.ret!=200)return;
         wx.config({
             debug: isDebug,
             appId: d.appid,
