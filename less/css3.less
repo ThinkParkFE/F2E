@@ -62,35 +62,35 @@
 }
 
 .rotate3d(@x: 0, @y: 0, @z: 0, @degrees: 0deg) {
-  -webkit-transform: rotate3d(@arguments);
-  -moz-transform: rotate3d(@arguments);
-  -ms-transform: rotate3d(@arguments);
-  -o-transform: rotate3d(@arguments);
-  transform: rotate3d(@arguments);
+  -webkit-transform: rotate3d(@x,@y,@z,@degrees);
+  -moz-transform: rotate3d(@x,@y,@z,@degrees);
+  -ms-transform: rotate3d(@x,@y,@z,@degrees);
+  -o-transform: rotate3d(@x,@y,@z,@degrees);
+  transform: rotate3d(@x,@y,@z,@degrees);
 }
 
 .rotateX(@degrees: 0deg) {
-  -webkit-transform: rotateX(@arguments);
-  -moz-transform: rotateX(@arguments);
-  -ms-transform: rotateX(@arguments);
-  -o-transform: rotateX(@arguments);
-  transform: rotateX(@arguments);
+  -webkit-transform: rotateX(@degrees);
+  -moz-transform: rotateX(@degrees);
+  -ms-transform: rotateX(@degrees);
+  -o-transform: rotateX(@degrees);
+  transform: rotateX(@degrees);
 }
 
 .rotateY(@degrees: 0deg) {
-  -webkit-transform: rotateY(@arguments);
-  -moz-transform: rotateY(@arguments);
-  -ms-transform: rotateY(@arguments);
-  -o-transform: rotateY(@arguments);
-  transform: rotateY(@arguments);
+  -webkit-transform: rotateY(@degrees);
+  -moz-transform: rotateY(@degrees);
+  -ms-transform: rotateY(@degrees);
+  -o-transform: rotateY(@degrees);
+  transform: rotateY(@degrees);
 }
 
 .rotateZ(@degrees: 0deg) {
-  -webkit-transform: rotateZ(@arguments);
-  -moz-transform: rotateZ(@arguments);
-  -ms-transform: rotateZ(@arguments);
-  -o-transform: rotateZ(@arguments);
-  transform: rotateZ(@arguments);
+  -webkit-transform: rotateZ(@degrees);
+  -moz-transform: rotateZ(@degrees);
+  -ms-transform: rotateZ(@degrees);
+  -o-transform: rotateZ(@degrees);
+  transform: rotateZ(@degrees);
 }
 
 //缩放
@@ -103,35 +103,35 @@
 }
 
 .scaleX(@x: 0) {
-  -webkit-transform: scaleX(@arguments);
-  -moz-transform: scaleX(@arguments);
-  -ms-transform: scaleX(@arguments);
-  -o-transform: scaleX(@arguments);
-  transform: scaleX(@arguments);
+  -webkit-transform: scaleX(@x);
+  -moz-transform: scaleX(@x);
+  -ms-transform: scaleX(@x);
+  -o-transform: scaleX(@x);
+  transform: scaleX(@x);
 }
 
 .scaleY(@y: 0) {
-  -webkit-transform: scaleY(@arguments);
-  -moz-transform: scaleY(@arguments);
-  -ms-transform: scaleY(@arguments);
-  -o-transform: scaleY(@arguments);
-  transform: scaleY(@arguments);
+  -webkit-transform: scaleY(@y);
+  -moz-transform: scaleY(@y);
+  -ms-transform: scaleY(@y);
+  -o-transform: scaleY(@y);
+  transform: scaleY(@y);
 }
 
 //重定位元素
 .translate(@x: 0px, @y: 0px) {
-  -webkit-transform: translate(@arguments);
-  -moz-transform: translate(@arguments);
-  -ms-transform: translate(@arguments);
-  -o-transform: translate(@arguments);
+  -webkit-transform: translate(@x, @y);
+  -moz-transform: translate(@x, @y);
+  -ms-transform: translate(@x, @y);
+  -o-transform: translate(@x, @y, @y);
   transform: translate(@arguments);
 }
 
 .translate3d(@x: 0px, @y: 0px, @z: 0px) {
-  -webkit-transform: translate3d(@arguments);
-  -moz-transform: translate3d(@arguments);
-  -o-transform: translate3d(@arguments);
-  transform: translate3d(@arguments);
+  -webkit-transform: translate3d(@x, @y, @z);
+  -moz-transform: translate3d(@x, @y, @z);
+  -o-transform: translate3d(@x, @y, @z);
+  transform: translate3d(@x, @y, @z);
 }
 
 .translateX(@x: 0px) {

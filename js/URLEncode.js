@@ -1,10 +1,10 @@
 /**
- * url编码及解码
+ * url处理
+ * 1 queryParams url参数
+ * 2 encode 编码
+ * 3 decode 解码
  */
 (function (window, namespace, factory) {
-    window.tp = window.tp || {};
-    window.tp[namespace] = factory(namespace, window);
-/////////////////////////// CommonJS /////////////////////////////////
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs
@@ -17,10 +17,13 @@
                 module.exports = factory(namespace, window);
             });
         }
+    }else{
+        window.tp = window.tp || {};
+        window.tp[namespace] = factory(namespace, window);
     }
 })(window, 'url', function (namespace, window) {
     namespace = {
-        version: '1.0.1'
+        version: '1.0.2'
     };
     function str2asc(strstr) {
         return ("0" + strstr.charCodeAt(0).toString(16)).slice(-2);
@@ -29,7 +32,15 @@
     function asc2str(ascasc) {
         return String.fromCharCode(ascasc);
     }
-
+    namespace.queryParams = (function () {
+        var regExp = /(?:\?|&)?(\w+)=([^&=]*)/gi;
+        var url = window.location.href.split('#')[0];
+        var result, params = {};
+        while ((result = regExp.exec(url)) !== null) {
+            params[result[1]] = result[2];
+        }
+        return params;
+    }());
     /**
      * url编码
      */

@@ -1,10 +1,8 @@
 /**
  * 百度统计代码
+ * init 初始化
  */
 (function (window, namespace, factory) {
-    window.tp = window.tp || {};
-    window.tp[namespace] = factory(namespace, window);
-    /////////////////////////// CommonJS /////////////////////////////////
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs
@@ -17,11 +15,14 @@
                 module.exports = factory(namespace, window);
             });
         }
+    }else{
+        window.tp = window.tp || {};
+        window.tp[namespace] = factory(namespace, window);
     }
 })(window, 'tongji', function (namespace, window) {
     window._hmt = window._hmt || [];
     namespace = {
-        version: "1.0.1"
+        version: "1.0.2"
     };
     namespace.init = function (BaiduTongjiSiteID) {
         if (!BaiduTongjiSiteID) {

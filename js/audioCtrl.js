@@ -3,12 +3,9 @@
  *方法名称： tp.audio.load(opts)
  * opts 为audio原生对应属性
  *说明：   无需实例化
+ * load 加载音乐
  */
-
 (function (window, namespace, factory) {
-    window.tp = window.tp || {};
-    window.tp[namespace] = factory(namespace, window);
-/////////////////////////// CommonJS /////////////////////////////////
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs
@@ -21,6 +18,9 @@
                 module.exports = factory(namespace, window);
             });
         }
+    }else{
+        window.tp = window.tp || {};
+        window.tp[namespace] = factory(namespace, window);
     }
 })(window, 'audio', function (namespace, window) {
 
@@ -30,8 +30,8 @@
     var isiphone = !navigator.userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
     /**
      * audio 控制器
-     * @param  {[type]} option audio属性
-     * @return {[type]}        audio对象
+     * @param option     audio属性
+     * @returns {Audio}  audio对象
      */
     namespace.load = function (option) {
         var options_audio = {
@@ -50,17 +50,9 @@
                 _audio[key] = opts[key];
             }
         }
-
-        //todo ios兼容
-        _audio.load(function () { //加载
-            // console.log(this);
-            //this.play();
-            //this.pause();
-        });
         _audio.oncanplay = function () {
             if ((!this.isload) && isiphone) {
                 this.isload = true;
-                //console.log(this);
                 this.play();
                 if (!this.autoplay || !this.played) this.pause();
             }

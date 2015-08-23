@@ -1,11 +1,10 @@
 /**
  * 时间格式化 及时间差
  *使用说明请参见各个函数
+ * format 格式化时间
+ * diff  时间差
  */
 (function (window, namespace, factory) {
-    window.tp = window.tp || {};
-    window.tp[namespace] = factory(namespace, window);
-/////////////////////////// CommonJS /////////////////////////////////
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs
@@ -18,6 +17,9 @@
                 module.exports = factory(namespace, window);
             });
         }
+    }else{
+        window.tp = window.tp || {};
+        window.tp[namespace] = factory(namespace, window);
     }
 })(window, 'date', function (namespace, window) {
     namespace = {
