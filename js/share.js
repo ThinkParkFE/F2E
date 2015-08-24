@@ -24,7 +24,7 @@
     }
 })(window, 'wx', function () {
     var WX = {
-        version: '1.0.6'
+        version: '1.0.7'
     };
     var shareData = {
         title: '',
@@ -145,7 +145,7 @@
                     'openCard'
                 ],
                 success: function checkJsApisuccess(res) {
-                    namespace.setshare();
+                    WX.setshare();
                 }
             });
         });
