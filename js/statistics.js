@@ -2,7 +2,7 @@
  * 百度统计代码
  * init 初始化
  */
-(function (window, namespace, factory) {
+!(function (window, namespace, factory) {
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs

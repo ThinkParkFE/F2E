@@ -3,7 +3,7 @@
  *音乐控制
  *方法名称： tp.util
  */
-(function (window, namespace, factory) {
+!(function (window, namespace, factory) {
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs
@@ -27,7 +27,7 @@
     };
     //判断手机号码正确性
     utils.ismobile = function (s) {
-        var p = /^(013|015|13|15|018|18)\d{9}$/;
+        var p = /^(13[0-9]|14[0-9]|15[0-9]|18[0-9])([0-9]{8,8})$/;
         if (s.match(p) != null) {
             return true;
         }

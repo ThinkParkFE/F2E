@@ -5,7 +5,7 @@
  *说明：   无需实例化
  * load 加载音乐
  */
-(function (window, namespace, factory) {
+!(function (window, namespace, factory) {
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs

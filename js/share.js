@@ -5,7 +5,7 @@
  *  2.当前只能在socialpark.com.cn 域名下使用 其他域名使用无效(受公众账号设置限制)
  *  3.本组件依赖 http://res.wx.qq.com/open/js/jweixin-1.0.0.js
  */
-(function (window, namespace, factory) {
+!(function (window, namespace, factory) {
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs

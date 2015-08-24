@@ -4,7 +4,7 @@
  * 2 encode 编码
  * 3 decode 解码
  */
-(function (window, namespace, factory) {
+!(function (window, namespace, factory) {
     if (typeof define === 'function' && (define.amd || define.cmd)) {
         if (define.amd) {
             // AMD 规范，for：requirejs

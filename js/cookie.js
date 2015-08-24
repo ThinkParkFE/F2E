@@ -1,5 +1,5 @@
 /**
- * Created by hejun on 15/8/23.
+ * cookie类
  */
 !(function (window, namespace, factory) {
     if (typeof define === 'function' && (define.amd || define.cmd)) {
