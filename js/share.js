@@ -22,10 +22,7 @@
         window.tp = window.tp || {};
         window.tp[namespace] = factory();
     }
-})(window, 'wx', function () {
-    var WX = {
-        version: '1.0.6'
-    };
+})(window, 'share', function () {
     var shareData = {
         title: '',
         desc: '',
@@ -43,22 +40,30 @@
      * @param  {[type]} callback          初始化成功后回调函数
      * @param  {[type]} debug             调试是否打开 默认false
      */
-    WX.init = function (defaultshareData, callback, debug) {
+    function WX(defaultshareData, callback, debug) {
+        this.init(defaultshareData, callback, debug);
+    }
+    WX.prototype.version='1.1.0';
+    WX.prototype.init = function (defaultshareData, callback, debug) {
         defaultshareData = defaultshareData || {};
         shareData = extend(shareData, defaultshareData);
         debug = debug || isDebug;
         callback = typeof(callback) === "function" ? callback : null;
         isDebug = !!debug;
-        var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
+        var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.share.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
         if (window.wx) {
-            loadScript(url, callback);
+            loadScript(url, function () {
+                WX.prototype.wx=window.wx;
+                callback();
+            });
         } else {
+            WX.prototype.wx=window.wx;
             loadScript("http://res.wx.qq.com/open/js/jweixin-1.0.0.js", function () {
                 loadScript(url, callback);
             });
         }
     };
-    WX.config = function (d) {
+    WX.prototype.config = function (d) {
         if(d.ret!=200)return;
         wx.config({
             debug: isDebug,
@@ -152,7 +157,7 @@
     };
 
 
-    WX.setshare = function (d) {
+    WX.prototype.setshare = function (d) {
         d = d || {};
         var currShareData = extend(shareData, d);
         wx.hideMenuItems({
