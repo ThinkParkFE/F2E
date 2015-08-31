@@ -3,27 +3,11 @@
  *使用说明请参见各个函数
  * format 格式化时间
  * diff  时间差
+ * 全局对象 window.tp.date
  */
-!(function (window, namespace, factory) {
-    if (typeof define === 'function' && (define.amd || define.cmd)) {
-        if (define.amd) {
-            // AMD 规范，for：requirejs
-            define(function () {
-                return factory();
-            });
-        } else if (define.cmd) {
-            // CMD 规范，for：seajs
-            define(function (require, exports, module) {
-                module.exports = factory();
-            });
-        }
-    }else{
-        window.tp = window.tp || {};
-        window.tp[namespace] = factory();
-    }
-})(window, 'date', function () {
+!(function () {
     var dataCtrl = {
-        version: '1.0.1'
+        version: '1.0.2'
     };
     /**
      * 时间格式化方法--对Date的扩展，将 Date 转化为指定格式的String
@@ -82,5 +66,8 @@
             return e.message;
         }
     };
-    return dataCtrl;
-});
+
+    "function" == typeof define ? define(function() {
+        return dataCtrl
+    }) : "undefined" != typeof exports ? module.exports = dataCtrl : window.tp=window.tp||{},window.tp['date']= dataCtrl;
+})();

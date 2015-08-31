@@ -1,24 +1,8 @@
 /**
  * cookie类
+ * 全局对象 window.tp.cookie
  */
-!(function (window, namespace, factory) {
-    if (typeof define === 'function' && (define.amd || define.cmd)) {
-        if (define.amd) {
-            // AMD 规范，for：requirejs
-            define(function () {
-                return factory();
-            });
-        } else if (define.cmd) {
-            // CMD 规范，for：seajs
-            define(function (require, exports, module) {
-                module.exports = factory();
-            });
-        }
-    } else {
-        window.tp = window.tp || {};
-        window.tp[namespace] = factory();
-    }
-})(window, 'cookie', function () {
+!(function () {
     var cookie = function () {
         return cookie.get.apply(cookie, arguments);
     };
@@ -173,5 +157,8 @@
         return ret;
 
     };
-    return cookie;
-});
+
+    "function" == typeof define ? define(function() {
+        return cookie
+    }) : "undefined" != typeof exports ? module.exports = cookie : window.tp=window.tp||{},window.tp['cookie']= cookie;
+})();

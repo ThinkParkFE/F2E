@@ -4,27 +4,12 @@
  *  1.加载js后 请先执行init方法
  *  2.当前只能在socialpark.com.cn 域名下使用 其他域名使用无效(受公众账号设置限制)
  *  3.本组件依赖 http://res.wx.qq.com/open/js/jweixin-1.0.0.js
+ *  暂不支持 cmd amd 引用
+ *  全局对象 window.tp.wx
  */
-!(function (window, namespace, factory) {
-    if (typeof define === 'function' && (define.amd || define.cmd)) {
-        if (define.amd) {
-            // AMD 规范，for：requirejs
-            define(function () {
-                return factory();
-            });
-        } else if (define.cmd) {
-            // CMD 规范，for：seajs
-            define(function (require, exports, module) {
-                module.exports = factory();
-            });
-        }
-    } else {
-        window.tp = window.tp || {};
-        window.tp[namespace] = factory();
-    }
-})(window, 'wx', function () {
+!(function () {
     var WX = {
-        version: '1.0.7'
+        version: '1.0.8'
     };
     var shareData = {
         title: '',
@@ -37,6 +22,8 @@
         }
     };
     var isDebug = false;
+
+
     /**
      * 分享初始化
      * @param  {[type]} defaultshareData  默认分享文案
@@ -51,15 +38,20 @@
         isDebug = !!debug;
         var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
         if (window.wx) {
+            WX.wechat = window.wx;
             loadScript(url, callback);
         } else {
             loadScript("http://res.wx.qq.com/open/js/jweixin-1.0.0.js", function () {
+                WX.wechat = window.wx;
                 loadScript(url, callback);
             });
         }
     };
     WX.config = function (d) {
-        if(d.ret!=200)return;
+        if (d.ret != 200){
+            if(isDebug)alert(JSON.stringify(d));
+            return;
+        }
         wx.config({
             debug: isDebug,
             appId: d.appid,
@@ -145,6 +137,12 @@
                     'openCard'
                 ],
                 success: function checkJsApisuccess(res) {
+                    wx.hideMenuItems({
+                        menuList: ['menuItem:share:weiboApp', 'menuItem:share:facebook']
+                    });
+                    wx.showMenuItems({
+                        menuList: ['menuItem:profile', 'menuItem:addContact']
+                    });
                     WX.setshare();
                 }
             });
@@ -155,12 +153,6 @@
     WX.setshare = function (d) {
         d = d || {};
         var currShareData = extend(shareData, d);
-        wx.hideMenuItems({
-            menuList: ['menuItem:share:weiboApp', 'menuItem:share:facebook']
-        });
-        wx.showMenuItems({
-            menuList: ['menuItem:profile', 'menuItem:addContact']
-        });
         // 分享到微信朋友圈
         wx.onMenuShareTimeline({
             title: currShareData.title,
@@ -232,12 +224,12 @@
                 if (script.readyState == "loaded" ||
                     script.readyState == "complete") {
                     script.onreadystatechange = null;
-                    typeof (callback)==="function"&&callback();
+                    typeof (callback) === "function" && callback();
                 }
             };
         } else { //Others: Firefox, Safari, Chrome, and Opera 
             script.onload = function () {
-                typeof (callback)==="function"&&callback();
+                typeof (callback) === "function" && callback();
             };
         }
         script.src = url;
@@ -257,5 +249,7 @@
         return result;
     }
 
-    return WX;
-});
+    "function" == typeof define ? define(function () {
+        return WX
+    }) : "undefined" != typeof exports ? module.exports = WX : window.tp = window.tp || {}, window.tp['wx'] = WX;
+})();

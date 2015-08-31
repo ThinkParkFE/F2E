@@ -2,28 +2,11 @@
  * Created by hejun on 15/8/23.
  *音乐控制
  *方法名称： tp.util
+ * 全局对象 window.tp.util
  */
-!(function (window, namespace, factory) {
-    if (typeof define === 'function' && (define.amd || define.cmd)) {
-        if (define.amd) {
-            // AMD 规范，for：requirejs
-            define(function () {
-                return factory();
-            });
-        } else if (define.cmd) {
-            // CMD 规范，for：seajs
-            define(function (require, exports, module) {
-                module.exports = factory();
-            });
-        }
-    } else {
-        window.tp = window.tp || {};
-        window.tp[namespace] = factory();
-    }
-})(window, 'util', function () {
-
+!(function () {
     var utils = {
-        version: '0.0.1'
+        version: '0.0.2'
     };
     //判断手机号码正确性
     utils.ismobile = function (s) {
@@ -136,6 +119,8 @@
         }
         return result;
     };
-    return utils;
-});
+    "function" == typeof define ? define(function() {
+        return utils
+    }) : "undefined" != typeof exports ? module.exports = utils : window.tp=window.tp||{},window.tp['util']= utils;
+})();
 

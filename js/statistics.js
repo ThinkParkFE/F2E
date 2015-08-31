@@ -1,37 +1,20 @@
 /**
  * 百度统计代码
- * init 初始化
+ *  初始化 new tp.tongji(id)
+ *  全局对象 window.tp.tongji
  */
-!(function (window, namespace, factory) {
-    if (typeof define === 'function' && (define.amd || define.cmd)) {
-        if (define.amd) {
-            // AMD 规范，for：requirejs
-            define(function () {
-                return factory();
-            });
-        } else if (define.cmd) {
-            // CMD 规范，for：seajs
-            define(function (require, exports, module) {
-                module.exports = factory();
-            });
-        }
-    }else{
-        window.tp = window.tp || {};
-        window.tp[namespace] = factory();
-    }
-})(window, 'tongji', function () {
+!(function() {
     window._hmt = window._hmt || [];
-    var baidutongji = {
-        version: "1.0.2"
-    };
-    baidutongji.init = function (BaiduTongjiSiteID) {
-        if (!BaiduTongjiSiteID) {
-            return;
-        }
+    var baidutongji= function (id) {
+        if (!id) {return;}
         var hm = document.createElement("script");
-        hm.src = "//hm.baidu.com/hm.js?" + BaiduTongjiSiteID;
+        hm.src = "//hm.baidu.com/hm.js?" + id;
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     };
-    return baidutongji;
-});
+    baidutongji.version="1.0.3";
+
+    "function" == typeof define ? define(function() {
+        return baidutongji
+    }) : "undefined" != typeof exports ? module.exports = baidutongji : window.tp=window.tp||{},window.tp['tongji']= baidutongji;
+})();

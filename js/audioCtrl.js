@@ -4,36 +4,21 @@
  * opts 为audio原生对应属性
  *说明：   无需实例化
  * load 加载音乐
+ * 全局对象 window.tp.audio
  */
-!(function (window, namespace, factory) {
-    if (typeof define === 'function' && (define.amd || define.cmd)) {
-        if (define.amd) {
-            // AMD 规范，for：requirejs
-            define(function () {
-                return factory();
-            });
-        } else if (define.cmd) {
-            // CMD 规范，for：seajs
-            define(function (require, exports, module) {
-                module.exports = factory();
-            });
-        }
-    }else{
-        window.tp = window.tp || {};
-        window.tp[namespace] = factory();
-    }
-})(window, 'audio', function () {
-
-    var audio = {
-        version: '1.0.2'
+!(function () {
+    var audio= function (option) {
+        this.load(option);
     };
-    var isiphone = !navigator.userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
+    audio.version= '1.0.3';
+
+    var isIphone = !navigator.userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
     /**
      * audio 控制器
      * @param option     audio属性
      * @returns {Audio}  audio对象
      */
-    audio.load = function (option) {
+    audio.prototype.load = function (option) {
         var options_audio = {
             loop: true,
             preload: 'load',
@@ -51,7 +36,7 @@
             }
         }
         _audio.oncanplay = function () {
-            if ((!this.isload) && isiphone) {
+            if ((!this.isload) && isIphone) {
                 this.isload = true;
                 this.play();
                 if (!this.autoplay || !this.played) this.pause();
@@ -72,6 +57,11 @@
         return result;
     }
 
-    return audio;
-});
+   
+
+    "function" == typeof define ? define(function() {
+        return audio
+    }) : "undefined" != typeof exports ? module.exports = audio : window.tp=window.tp||{},window.tp['audio']= audio;
+})();
+
 

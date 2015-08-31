@@ -3,27 +3,11 @@
  * 1 queryParams url参数
  * 2 encode 编码
  * 3 decode 解码
+ *  全局对象 window.tp.url
  */
-!(function (window, namespace, factory) {
-    if (typeof define === 'function' && (define.amd || define.cmd)) {
-        if (define.amd) {
-            // AMD 规范，for：requirejs
-            define(function () {
-                return factory();
-            });
-        } else if (define.cmd) {
-            // CMD 规范，for：seajs
-            define(function (require, exports, module) {
-                module.exports = factory();
-            });
-        }
-    }else{
-        window.tp = window.tp || {};
-        window.tp[namespace] = factory();
-    }
-})(window, 'url', function () {
+!(function () {
     var url = {
-        version: '1.0.2'
+        version: '1.0.3'
     };
     function str2asc(strstr) {
         return ("0" + strstr.charCodeAt(0).toString(16)).slice(-2);
@@ -32,15 +16,17 @@
     function asc2str(ascasc) {
         return String.fromCharCode(ascasc);
     }
-    url.queryParams = (function () {
+
+    //url参数获取
+    url.queryParams = function (uri) {
         var regExp = /(?:\?|&)?(\w+)=([^&=]*)/gi;
-        var url = window.location.href.split('#')[0];
+        var url = (uri&&uri.split('#')[0])||window.location.href.split('#')[0];
         var result, params = {};
         while ((result = regExp.exec(url)) !== null) {
             params[result[1]] = result[2];
         }
         return params;
-    }());
+    };
     /**
      * url编码
      */
@@ -92,5 +78,7 @@
         return ret;
     };
 
-    return url;
-});
+    "function" == typeof define ? define(function() {
+        return url
+    }) : "undefined" != typeof exports ? module.exports = url : window.tp=window.tp||{},window.tp['url']= url;
+})();
