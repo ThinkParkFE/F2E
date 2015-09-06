@@ -8,7 +8,7 @@
  */
 !(function () {
     var audio= function (option) {
-        this.load(option);
+        return this.load(option);
     };
     audio.version= '1.0.3';
 
