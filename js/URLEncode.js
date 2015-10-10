@@ -7,8 +7,9 @@
  */
 !(function () {
     var url = {
-        version: '1.0.3'
+        version: '1.0.4'
     };
+
     function str2asc(strstr) {
         return ("0" + strstr.charCodeAt(0).toString(16)).slice(-2);
     }
@@ -20,17 +21,17 @@
     //url参数获取
     url.queryParams = function (uri) {
         var regExp = /(?:\?|&)?(\w+)=([^&=]*)/gi;
-        var url = (uri&&uri.split('#')[0])||window.location.href.split('#')[0];
+        var url = (uri && uri.split('#')[0]) || window.location.href.split('#')[0];
         var result, params = {};
         while ((result = regExp.exec(url)) !== null) {
-            params[result[1]] = result[2];
+            params[result[1]] = this.decode(decodeURI(result[2]));
         }
         return params;
     };
     /**
      * url编码
      */
-    url.encode= function (str) {
+    url.encode = function (str) {
         var ret = "";
         var strSpecial = "!\"#$%&'()*+,/:;<=>?[]^`{|}~%";
         var tt = "";
@@ -78,7 +79,7 @@
         return ret;
     };
 
-    "function" == typeof define ? define(function() {
+    "function" == typeof define ? define(function () {
         return url
-    }) : "undefined" != typeof exports ? module.exports = url : window.tp=window.tp||{},window.tp['url']= url;
+    }) : "undefined" != typeof exports ? module.exports = url : window.tp = window.tp || {}, window.tp['url'] = url;
 })();
