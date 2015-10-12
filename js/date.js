@@ -7,7 +7,7 @@
  */
 !(function () {
     var dataCtrl = {
-        version: '1.0.2'
+        version: '1.0.3'
     };
     /**
      * 时间格式化方法--对Date的扩展，将 Date 转化为指定格式的String
@@ -20,7 +20,7 @@
      *(new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
      *(new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18
      */
-    Date.prototype.format = function (fmt) {
+    dataCtrl.format = Date.prototype.format = function (fmt) {
         var o = {
             "M+": this.getMonth() + 1, //month
             "d+": this.getDate(), //day
@@ -67,7 +67,7 @@
         }
     };
 
-    "function" == typeof define ? define(function() {
+    "function" == typeof define ? define(function () {
         return dataCtrl
-    }) : "undefined" != typeof exports ? module.exports = dataCtrl : window.tp=window.tp||{},window.tp['date']= dataCtrl;
+    }) : "undefined" != typeof exports ? module.exports = dataCtrl : (window.tp = window.tp || {}, window.tp['date'] = dataCtrl);
 })();

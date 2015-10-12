@@ -82,5 +82,5 @@
 
     "function" == typeof define ? define(function() {
         return number
-    }) : "undefined" != typeof exports ? module.exports = number : window.tp=window.tp||{},window.tp['number']= number;
+    }) : "undefined" != typeof exports ? module.exports = number : (window.tp=window.tp||{},window.tp['number']= number);
 })();

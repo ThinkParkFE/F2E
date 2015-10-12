@@ -6,7 +6,7 @@
  */
 !(function () {
     var utils = {
-        version: '0.0.2'
+        version: '0.0.3'
     };
     //判断手机号码正确性
     utils.ismobile = function (s) {
@@ -99,8 +99,29 @@
             };
         }
         script.src = url;
-        document.body.appendChild(script);
+        utils.DOMReady(function () {
+            document.body.appendChild(script);
+        });
+
     };
+    /**
+     * dom元素加载完成检测
+     * @type {boolean}
+     */
+    var isDOMReady=false;
+     utils.DOMReady = function(callback){
+        if(isDOMReady){
+            typeof (callback) === "function" && callback();
+        }else{
+            setTimeout(function () {
+                if(document.body){
+                    isDOMReady=true;
+                }
+                DOMReady(callback);
+            },1);
+        }
+
+    }
     /**
      * 对象扩展
      * @param target
@@ -121,6 +142,6 @@
     };
     "function" == typeof define ? define(function() {
         return utils
-    }) : "undefined" != typeof exports ? module.exports = utils : window.tp=window.tp||{},window.tp['util']= utils;
+    }) : "undefined" != typeof exports ? module.exports = utils : (window.tp=window.tp||{},window.tp['util']= utils);
 })();
 

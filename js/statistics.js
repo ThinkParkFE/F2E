@@ -12,9 +12,9 @@
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     };
-    baidutongji.version="1.0.3";
+    baidutongji.version="1.0.4";
 
     "function" == typeof define ? define(function() {
         return baidutongji
-    }) : "undefined" != typeof exports ? module.exports = baidutongji : window.tp=window.tp||{},window.tp['tongji']= baidutongji;
+    }) : "undefined" != typeof exports ? module.exports = baidutongji : (window.tp=window.tp||{},window.tp['tongji']= baidutongji);
 })();

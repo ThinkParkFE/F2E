@@ -7,7 +7,7 @@
      * @lends localStorage
      */
     {
-
+        version:'1.0.1',
         /**
          * 设置一个localStorage
          * @param {String} name
@@ -56,5 +56,5 @@
 
     "function" == typeof define ? define(function() {
         return localStorage
-    }) : "undefined" != typeof exports ? module.exports = localStorage : window.tp=window.tp||{},window.tp['localStorage']= localStorage;
+    }) : "undefined" != typeof exports ? module.exports = localStorage : (window.tp=window.tp||{},window.tp['localStorage']= localStorage);
 })();

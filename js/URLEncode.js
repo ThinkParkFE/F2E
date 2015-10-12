@@ -7,7 +7,7 @@
  */
 !(function () {
     var url = {
-        version: '1.0.4'
+        version: '1.0.5'
     };
 
     function str2asc(strstr) {
@@ -81,5 +81,5 @@
 
     "function" == typeof define ? define(function () {
         return url
-    }) : "undefined" != typeof exports ? module.exports = url : window.tp = window.tp || {}, window.tp['url'] = url;
+    }) : "undefined" != typeof exports ? module.exports = url : (window.tp = window.tp || {}, window.tp['url'] = url);
 })();

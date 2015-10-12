@@ -3,13 +3,15 @@
  *  纯前端配置-微信分享
  *  1.加载js后 请先执行init方法
  *  2.当前只能在socialpark.com.cn 域名下使用 其他域名使用无效(受公众账号设置限制)
- *  3.本组件依赖 http://res.wx.qq.com/open/js/jweixin-1.0.0.js
- *  暂不支持 cmd amd 引用
- *  全局对象 window.tp.wx
+ *  3.本组件依赖 http://res.wx.qq.com/open/js/jweixin-1.0.0.js 自动加载 自动依赖
+ *  4.支持 cmd amd 引用
+ *  5.全局对象 window.tp.wx
+ *  6.返回对象中wechat为微信jssdk方法
  */
 !(function () {
+
     var WX = {
-        version: '1.0.8'
+        version: '2.0.0'
     };
     var shareData = {
         title: '',
@@ -22,8 +24,11 @@
         }
     };
     var isDebug = false;
-
-
+    var wechatSdkUrl="http://res.wx.qq.com/open/js/jweixin-1.0.0.js";
+    WX.wechat=null;
+    WX.setWechat= function (wechat) {
+        WX.wechat=wechat;
+    };
     /**
      * 分享初始化
      * @param  {[type]} defaultshareData  默认分享文案
@@ -37,22 +42,30 @@
         callback = typeof(callback) === "function" ? callback : null;
         isDebug = !!debug;
         var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
-        if (window.wx) {
-            WX.wechat = window.wx;
-            loadScript(url, callback);
-        } else {
-            loadScript("http://res.wx.qq.com/open/js/jweixin-1.0.0.js", function () {
-                WX.wechat = window.wx;
-                loadScript(url, callback);
+
+        if("function" == typeof define){
+            require(["http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=define&url=" + encodeURIComponent(location.href.replace(location.hash, ""))], function (data) {
+                typeof (callback) === "function" && callback();
+                WX.config(data);
             });
         }
+        else if(window.wx){
+            WX.setWechat(window.wx);
+            loadScript(url, callback);
+        }else{
+            loadScript(wechatSdkUrl, function () {
+                WX.setWechat(window.wx);
+                loadScript(url, callback);
+            })
+        }
+
     };
     WX.config = function (d) {
         if (d.ret != 200){
             if(isDebug)alert(JSON.stringify(d));
             return;
         }
-        wx.config({
+        WX.wechat.config({
             debug: isDebug,
             appId: d.appid,
             timestamp: d.timestamp,
@@ -97,8 +110,8 @@
             ]
         });
 
-        wx.ready(function () {
-            wx.checkJsApi({
+        WX.wechat.ready(function () {
+            WX.wechat.checkJsApi({
                 jsApiList: [
                     'checkJsApi',
                     'onMenuShareTimeline',
@@ -137,10 +150,10 @@
                     'openCard'
                 ],
                 success: function checkJsApisuccess(res) {
-                    wx.hideMenuItems({
+                    WX.wechat.hideMenuItems({
                         menuList: ['menuItem:share:weiboApp', 'menuItem:share:facebook']
                     });
-                    wx.showMenuItems({
+                    WX.wechat.showMenuItems({
                         menuList: ['menuItem:profile', 'menuItem:addContact']
                     });
                     WX.setshare();
@@ -154,7 +167,7 @@
         d = d || {};
         var currShareData = extend(shareData, d);
         // 分享到微信朋友圈
-        wx.onMenuShareTimeline({
+        WX.wechat.onMenuShareTimeline({
             title: currShareData.title,
             link: currShareData.link,
             imgUrl: currShareData.imgUrl,
@@ -174,7 +187,7 @@
             }
         });
         // 发送给指定微信好友
-        wx.onMenuShareAppMessage({
+        WX.wechat.onMenuShareAppMessage({
             title: currShareData.title,
             desc: currShareData.desc,
             link: currShareData.link,
@@ -194,7 +207,7 @@
                 }
             }
         });
-        wx.onMenuShareQQ({
+        WX.wechat.onMenuShareQQ({
             title: currShareData.title, // 分享标题
             desc: currShareData.desc, // 分享描述
             link: currShareData.link, // 分享链接
@@ -219,7 +232,7 @@
     function loadScript(url, callback) {
         var script = document.createElement("script");
         script.type = "text/javascript";
-        if (script.readyState) { //IE 
+        if (script.readyState) { //IE
             script.onreadystatechange = function () {
                 if (script.readyState == "loaded" ||
                     script.readyState == "complete") {
@@ -227,13 +240,30 @@
                     typeof (callback) === "function" && callback();
                 }
             };
-        } else { //Others: Firefox, Safari, Chrome, and Opera 
+        } else { //Others: Firefox, Safari, Chrome, and Opera
             script.onload = function () {
                 typeof (callback) === "function" && callback();
             };
         }
         script.src = url;
-        document.body.appendChild(script);
+        DOMReady(function () {
+            document.body.appendChild(script);
+        });
+
+    }
+    var isDOMReady=false;
+    function DOMReady(callback){
+        if(isDOMReady){
+            typeof (callback) === "function" && callback();
+        }else{
+            setTimeout(function () {
+                if(document.body){
+                    isDOMReady=true;
+                }
+                DOMReady(callback);
+            },1);
+        }
+
     }
 
     function extend(target, source) {
@@ -249,7 +279,12 @@
         return result;
     }
 
-    "function" == typeof define ? define(function () {
-        return WX
-    }) : "undefined" != typeof exports ? module.exports = WX : window.tp = window.tp || {}, window.tp['wx'] = WX;
+    "function" == typeof define ? define([wechatSdkUrl],function (wx) {
+        WX.setWechat(wx);
+        return WX;
+    }) : (function () {
+        window.tp = window.tp || {};
+        window.tp['wx'] = WX;
+    })();
+
 })();

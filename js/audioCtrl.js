@@ -10,7 +10,7 @@
     var audio= function (option) {
         return this.load(option);
     };
-    audio.version= '1.0.3';
+    audio.version= '1.0.4';
 
     var isIphone = !navigator.userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
     /**
@@ -61,7 +61,7 @@
 
     "function" == typeof define ? define(function() {
         return audio
-    }) : "undefined" != typeof exports ? module.exports = audio : window.tp=window.tp||{},window.tp['audio']= audio;
+    }) : "undefined" != typeof exports ? module.exports = audio : (window.tp=window.tp||{},window.tp['audio']= audio);
 })();
 
 

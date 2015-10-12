@@ -22,10 +22,10 @@
         remove : function(name, domain, path) {
             window.document.cookie = name + "=; expires=Mon, 26 Jul 1997 05:00:00 GMT; " + (path ? ("path=" + path + "; ") : "path=/; ") + (domain ? ("domain=" + domain + ";") : ("domain=" + domainPrefix + ";"));
         },
-        version: '2.0.0'
+        version: '2.0.1'
     };
 
     "function" == typeof define ? define(function() {
         return cookie
-    }) : "undefined" != typeof exports ? module.exports = cookie : window.tp=window.tp||{},window.tp['cookie']= cookie;
+    }) : "undefined" != typeof exports ? module.exports = cookie : (window.tp=window.tp||{},window.tp['cookie']= cookie);
 })();
