@@ -24,18 +24,17 @@
     outline: none;
     border: none;
   }
-  input[type="text"], input[type="password"], input[type=button], textarea, button {
+  input,textarea, button {
     outline-style: none;
     -webkit-appearance: none;
+    background: none;
+    border: none;
   }
   input::-moz-focus-inner {
     border: none;
     padding: 0;
   }
-  input, textarea {
-    background: none;
-    border: none;
-  }
+
   textarea {
     resize: none;
   }
@@ -58,6 +57,9 @@
     width: 0;
     height: 0;
     display: none;
+  }
+  .clear{
+    .clearfix();
   }
 }
 
