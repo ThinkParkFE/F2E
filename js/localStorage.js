@@ -2,12 +2,32 @@
  * Created by hejun on 15/9/1.
  */
 !(function () {
+    function isType(type) {
+        return function(obj) {
+            return Object.prototype.toString.call(obj) === "[object " + type + "]"
+        }
+    }
+    var isObject = isType("Object");
+    var isString = isType("String");
+    var isArray =  isType("Array");
+    var isFunction = isType("Function");
+
+    function toJson(value){
+        return JSON.stringify(value);
+    }
+    function isStringNumber(num) {
+        return  /^-?\d+\.?\d*$/.test(num.replace(/["']/g, ''));
+    }
+    function reviver(key, value) {
+        if (value === 'true' || value === 'false') return value === 'true';
+        return value;
+    }
    var localStorage =
     /**
      * @lends localStorage
      */
     {
-        version:'1.0.1',
+        version:'1.0.2',
         /**
          * 设置一个localStorage
          * @param {String} name
@@ -15,7 +35,12 @@
          */
         setItem : function(name, value) {
             if(this.isSupports()){
-                window.localStorage.setItem(name,JSON.stringify(value));
+                if ( (typeof(value) == "undefined")) {
+                    return false;
+                } else if(isArray(value) || isObject(value)) {
+                    value = toJson(value);
+                }
+                window.localStorage.setItem(name,value);
             }
         },
         /**
@@ -24,8 +49,18 @@
          * @return {String}
          */
         getItem : function(name) {
+
             if(this.isSupports()){
-                return JSON.parse(window.localStorage.getItem(name)|| '{}');
+                var item=window.localStorage.getItem(name);
+                if (!item || item === 'null') {
+                    return null;
+                }
+
+                if (item.charAt(0) === "{" || item.charAt(0) === "[" || isStringNumber(item)) {
+                    return JSON.parse(item, reviver);
+                }
+
+                return item;
             }
             return null;
         },
@@ -53,6 +88,7 @@
             return ('localStorage' in window)&&window['localStorage']!== null;
         }
     };
+
 
     "function" == typeof define ? define(function() {
         return localStorage

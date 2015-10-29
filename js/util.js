@@ -5,9 +5,19 @@
  * 全局对象 window.tp.util
  */
 !(function () {
+    function isType(type) {
+        return function(obj) {
+            return Object.prototype.toString.call(obj) === "[object " + type + "]"
+        }
+    }
     var utils = {
-        version: '0.0.3'
+        version: '0.0.4',
+        isObject: isType("Object"),
+        isString : isType("String"),
+        isArray :  isType("Array"),
+        isFunction : isType("Function")
     };
+
     //判断手机号码正确性
     utils.ismobile = function (s) {
         var p = /^(13[0-9]|14[0-9]|15[0-9]|18[0-9])([0-9]{8,8})$/;

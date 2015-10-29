@@ -99,6 +99,20 @@
 .getheight(@height) {
   height: percentage(@height/1208);
 }
+//通用绝度定位元素 居中
+.getwithandcenter(@w) {
+  .getwidth(@w);
+  .getleft((750-@w)/2);
+}
+
+//通用顶部距离
+.gettop(@t) {
+  top: percentage(@t/1208);
+}
+//通用 left
+.getleft(@l) {
+  left: percentage(@l/750);
+}
 
 //三角形
 .triangle (top,@w:5px,@color:#ccc) {
