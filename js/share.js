@@ -11,7 +11,7 @@
 !(function () {
 
     var WX = {
-        version: '2.0.1'
+        version: '2.0.2'
     };
     var shareData = {
         title: '',
@@ -25,6 +25,7 @@
     };
     var isDebug = false;
     var isInit=false;
+    var _currShareData=null;
     var wechatSdkUrl="http://res.wx.qq.com/open/js/jweixin-1.0.0.js";
     WX.wechat=null;
     WX.setWechat= function (wechat) {
@@ -158,7 +159,7 @@
                         menuList: ['menuItem:profile', 'menuItem:addContact']
                     });
                     isInit=true;
-                    WX.setshare();
+                    WX.setshare(_currShareData);
                 }
             });
         });
@@ -167,20 +168,12 @@
 
 
     WX.setshare = function (d) {
-        d = d || {};
-        currShareData=extend(shareData, d);
-        _setshare();
-    };
+        _currShareData=  d || {};
 
-    var currShareData={};
-    function _setshare(){
         if(!isInit){
-            setTimeout(function () {
-                _setshare();
-            },1);
             return;
         }
-        if(!currShareData.title) return;
+        var currShareData=extend(shareData, _currShareData);
         // 分享到微信朋友圈
         WX.wechat.onMenuShareTimeline({
             title: currShareData.title,
