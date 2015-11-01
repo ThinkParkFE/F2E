@@ -1,6 +1,7 @@
 /**
  * animteOneByOne动画类
  * $("obj").animteOneByOne(opts);
+ * 支持链式写法
  */
 !(function ($) {
      var defaultOpts = {
@@ -12,7 +13,7 @@
     $.fn.animteOneByOne = function (opts) {
         var opts = $.extend({}, defaultOpts, opts || {});
         var alldelay = 0;
-        $(this).find("[data-animation]").each(function (index) {
+         $(this).find("[data-animation]").each(function (index) {
             var t = $(this);
             if ((!opts._loop) && t.data("isanimated"))return;
             var ani = t.data("animation") || opts.animation;
@@ -36,6 +37,7 @@
                 "animation-duration": ani_duration + "s"
             }).data("isanimated", true);
         });
+        return $(this);
     };
-   return $;
+
 })(Zepto);
