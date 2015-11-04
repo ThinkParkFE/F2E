@@ -11,7 +11,7 @@
 !(function () {
 
     var WX = {
-        version: '2.0.2'
+        version: '2.0.3'
     };
     var shareData = {
         title: '',
@@ -26,6 +26,7 @@
     var isDebug = false;
     var isInit=false;
     var _currShareData=null;
+    var initcallback = null;
     var wechatSdkUrl="http://res.wx.qq.com/open/js/jweixin-1.0.0.js";
     WX.wechat=null;
     WX.setWechat= function (wechat) {
@@ -41,23 +42,22 @@
         defaultshareData = defaultshareData || {};
         shareData = extend(shareData, defaultshareData);
         debug = debug || isDebug;
-        callback = typeof(callback) === "function" ? callback : null;
+        initcallback = typeof(callback) === "function" ? callback : null;
         isDebug = !!debug;
         var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
 
         if("function" == typeof define){
             require(["http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=define&url=" + encodeURIComponent(location.href.replace(location.hash, ""))], function (data) {
-                typeof (callback) === "function" && callback();
                 WX.config(data);
             });
         }
         else if(window.wx){
             WX.setWechat(window.wx);
-            loadScript(url, callback);
+            loadScript(url);
         }else{
             loadScript(wechatSdkUrl, function () {
                 WX.setWechat(window.wx);
-                loadScript(url, callback);
+                loadScript(url);
             })
         }
 
@@ -152,6 +152,7 @@
                     'openCard'
                 ],
                 success: function checkJsApisuccess(res) {
+                    typeof (initcallback) === "function" && initcallback();
                     WX.wechat.hideMenuItems({
                         menuList: ['menuItem:share:weiboApp', 'menuItem:share:facebook']
                     });
@@ -164,7 +165,6 @@
             });
         });
     };
-
 
 
     WX.setshare = function (d) {
@@ -235,9 +235,8 @@
                 }
             }
         });
+    };
 
-
-    }
     function loadScript(url, callback) {
         var script = document.createElement("script");
         script.type = "text/javascript";
