@@ -60,8 +60,8 @@
                 loadScript(url);
             })
         }
-
     };
+
     WX.config = function (d) {
         if (d.ret != 200) {
             if (isDebug)alert(JSON.stringify(d));
@@ -181,17 +181,13 @@
 
         var currShareData = extend(shareData, _currShareData);
 
+        //判断分享链接是否带参数
         if (currShareData.link.indexOf("?") != -1) {
-
-            //if (currShareData.link.indexOf("#") != -1) {
-            //
-            //    currShareData.link.replace("#", '&') + hmsrpyq;
-            //}
 
             // 分享到微信朋友圈
             WX.wechat.onMenuShareTimeline({
                 title: currShareData.title,
-                link: currShareData.link+ "&" + hmsrpyq,
+                link: currShareData.link.replace("#",'')+ "&" + hmsrpyq,
                 imgUrl: currShareData.imgUrl,
                 success: function () {
                     currShareData.success && currShareData.success();
