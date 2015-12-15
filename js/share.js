@@ -209,7 +209,7 @@
             WX.wechat.onMenuShareAppMessage({
                 title: currShareData.title,
                 desc: currShareData.desc,
-                link: currShareData.link+"&" + hmsrhy,
+                link: currShareData.link.replace("#",'')+"&" + hmsrhy,
                 imgUrl: currShareData.imgUrl,
                 success: function () {
                     currShareData.success && currShareData.success();
@@ -233,7 +233,7 @@
             WX.wechat.onMenuShareAppMessage({
                 title: currShareData.title,
                 desc: currShareData.desc,
-                link: currShareData.link+"?" + hmsrhy,
+                link: currShareData.link.replace("#",'')+"?" + hmsrhy,
                 imgUrl: currShareData.imgUrl,
                 success: function () {
                     currShareData.success && currShareData.success();
@@ -255,7 +255,7 @@
             // 分享到微信朋友圈
             WX.wechat.onMenuShareTimeline({
                 title: currShareData.title,
-                link: currShareData.link+"?" + hmsrpyq,
+                link: currShareData.link.replace("#",'')+"?" + hmsrpyq,
                 imgUrl: currShareData.imgUrl,
                 success: function () {
                     currShareData.success && currShareData.success();
