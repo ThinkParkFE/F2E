@@ -7,11 +7,12 @@
  *  4.支持 cmd amd 引用
  *  5.全局对象 window.tp.wx
  *  6.返回对象中wechat为微信jssdk方法
+ *  7.自动加上百度渠道统计,可统计 朋友圈 好友 qq
  */
 !(function () {
 
     var WX = {
-        version: '2.0.3'
+        version: '2.0.4'
     };
     var shareData = {
         title: '',
@@ -32,6 +33,43 @@
     WX.setWechat = function (wechat) {
         WX.wechat = wechat;
     };
+    var jsApiList= [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'onMenuShareQZone',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onRecordEnd',
+        'playVoice',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+    ];
     /**
      * 分享初始化
      * @param  {[type]} defaultshareData  默认分享文案
@@ -67,91 +105,20 @@
             if (isDebug)alert(JSON.stringify(d));
             return;
         }
+
         WX.wechat.config({
             debug: isDebug,
             appId: d.appid,
             timestamp: d.timestamp,
             nonceStr: d.noncestr,
             signature: d.signature,
-            jsApiList: [
-                'checkJsApi',
-                'onMenuShareTimeline',
-                'onMenuShareAppMessage',
-                'onMenuShareQQ',
-                'onMenuShareWeibo',
-                'onMenuShareQZone',
-                'hideMenuItems',
-                'showMenuItems',
-                'hideAllNonBaseMenuItem',
-                'showAllNonBaseMenuItem',
-                'translateVoice',
-                'startRecord',
-                'stopRecord',
-                'onRecordEnd',
-                'playVoice',
-                'pauseVoice',
-                'stopVoice',
-                'uploadVoice',
-                'downloadVoice',
-                'chooseImage',
-                'previewImage',
-                'uploadImage',
-                'downloadImage',
-                'getNetworkType',
-                'openLocation',
-                'getLocation',
-                'hideOptionMenu',
-                'showOptionMenu',
-                'closeWindow',
-                'scanQRCode',
-                'chooseWXPay',
-                'openProductSpecificView',
-                'addCard',
-                'chooseCard',
-                'openCard'
-            ]
+            jsApiList: jsApiList
         });
 
         WX.wechat.ready(function () {
             WX.wechat.checkJsApi({
-                jsApiList: [
-                    'checkJsApi',
-                    'onMenuShareTimeline',
-                    'onMenuShareAppMessage',
-                    'onMenuShareQQ',
-                    'onMenuShareWeibo',
-                    'onMenuShareQZone',
-                    'hideMenuItems',
-                    'showMenuItems',
-                    'hideAllNonBaseMenuItem',
-                    'showAllNonBaseMenuItem',
-                    'translateVoice',
-                    'startRecord',
-                    'stopRecord',
-                    'onRecordEnd',
-                    'playVoice',
-                    'pauseVoice',
-                    'stopVoice',
-                    'uploadVoice',
-                    'downloadVoice',
-                    'chooseImage',
-                    'previewImage',
-                    'uploadImage',
-                    'downloadImage',
-                    'getNetworkType',
-                    'openLocation',
-                    'getLocation',
-                    'hideOptionMenu',
-                    'showOptionMenu',
-                    'closeWindow',
-                    'scanQRCode',
-                    'chooseWXPay',
-                    'openProductSpecificView',
-                    'addCard',
-                    'chooseCard',
-                    'openCard'
-                ],
-                success: function checkJsApisuccess(res) {
+                jsApiList:jsApiList,
+                success: function(res) {
                     typeof (initcallback) === "function" && initcallback();
                     WX.wechat.hideMenuItems({
                         menuList: ['menuItem:share:weiboApp', 'menuItem:share:facebook']
@@ -160,6 +127,7 @@
                         menuList: ['menuItem:profile', 'menuItem:addContact']
                     });
                     isInit = true;
+
                     WX.setshare(_currShareData);
                 }
             });
@@ -167,11 +135,8 @@
     };
 
 
+
     WX.setshare = function (d) {
-
-        var hmsrpyq = "hmsr=%E5%BE%AE%E4%BF%A1%E5%A5%BD%E5%8F%8B";//微信朋友圈
-
-        var hmsrhy = "hmsr=%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88";//微信好友
 
         _currShareData = d || {};
 
@@ -181,104 +146,56 @@
 
         var currShareData = extend(shareData, _currShareData);
 
-        //判断分享链接是否带参数
-        if (currShareData.link.indexOf("?") != -1) {
+        var _link = currShareData.link.split('#')[0] + (currShareData.link.split('#')[0].indexOf("?") != -1 ? '&' : '?') +  "hmsr={from}" + (currShareData.link.split('#').length == 2 ? '#' + currShareData.link.split('#')[1]:'');
 
-            // 分享到微信朋友圈
-            WX.wechat.onMenuShareTimeline({
-                title: currShareData.title,
-                link: currShareData.link.replace("#",'')+ "&" + hmsrpyq,
-                imgUrl: currShareData.imgUrl,
-                success: function () {
-                    currShareData.success && currShareData.success();
-                    try {
-                        _hmt.push(['_trackEvent', "分享成功", '分享到朋友圈']);
-                    } catch (e) {
-                    }
-                },
-                cancel: function () {
-                    currShareData.cancel && currShareData.cancel();
-                    try {
-                        _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                    } catch (e) {
-                    }
+        // 分享到微信朋友圈
+        WX.wechat.onMenuShareTimeline({
+            title: currShareData.title,
+            link: _link.replace("hmsr={from}", 'hmsr=%E5%BE%AE%E4%BF%A1%E5%A5%BD%E5%8F%8B'),
+            imgUrl: currShareData.imgUrl,
+            success: function () {
+                currShareData.success && currShareData.success();
+                try {
+                    _hmt.push(['_trackEvent', "分享成功", '分享到朋友圈']);
+                } catch (e) {
                 }
-            });
-
-            // 发送给指定微信好友
-            WX.wechat.onMenuShareAppMessage({
-                title: currShareData.title,
-                desc: currShareData.desc,
-                link: currShareData.link.replace("#",'')+"&" + hmsrhy,
-                imgUrl: currShareData.imgUrl,
-                success: function () {
-                    currShareData.success && currShareData.success();
-                    try {
-                        _hmt.push(['_trackEvent', "分享成功", '分享给好友']);
-                    } catch (e) {
-                    }
-                },
-                cancel: function () {
-                    currShareData.cancel && currShareData.cancel();
-                    try {
-                        _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                    } catch (e) {
-                    }
+            },
+            cancel: function () {
+                currShareData.cancel && currShareData.cancel();
+                try {
+                    _hmt.push(['_trackEvent', "取消分享", '取消分享']);
+                } catch (e) {
                 }
-            });
+            }
+        });
 
-        } else {
-
-            // 发送给指定微信好友
-            WX.wechat.onMenuShareAppMessage({
-                title: currShareData.title,
-                desc: currShareData.desc,
-                link: currShareData.link.replace("#",'')+"?" + hmsrhy,
-                imgUrl: currShareData.imgUrl,
-                success: function () {
-                    currShareData.success && currShareData.success();
-                    try {
-                        _hmt.push(['_trackEvent', "分享成功", '分享给好友']);
-                    } catch (e) {
-                    }
-                },
-                cancel: function () {
-                    currShareData.cancel && currShareData.cancel();
-                    try {
-                        _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                    } catch (e) {
-                    }
+        // 发送给指定微信好友
+        WX.wechat.onMenuShareAppMessage({
+            title: currShareData.title,
+            desc: currShareData.desc,
+            link: _link.replace("hmsr={from}", 'hmsr=%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88'),
+            imgUrl: currShareData.imgUrl,
+            success: function () {
+                currShareData.success && currShareData.success();
+                try {
+                    _hmt.push(['_trackEvent', "分享成功", '分享给好友']);
+                } catch (e) {
                 }
-            });
-
-
-            // 分享到微信朋友圈
-            WX.wechat.onMenuShareTimeline({
-                title: currShareData.title,
-                link: currShareData.link.replace("#",'')+"?" + hmsrpyq,
-                imgUrl: currShareData.imgUrl,
-                success: function () {
-                    currShareData.success && currShareData.success();
-                    try {
-                        _hmt.push(['_trackEvent', "分享成功", '分享到朋友圈']);
-                    } catch (e) {
-                    }
-                },
-                cancel: function () {
-                    currShareData.cancel && currShareData.cancel();
-                    try {
-                        _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                    } catch (e) {
-                    }
+            },
+            cancel: function () {
+                currShareData.cancel && currShareData.cancel();
+                try {
+                    _hmt.push(['_trackEvent', "取消分享", '取消分享']);
+                } catch (e) {
                 }
-            });
-        }
+            }
+        });
 
 
         WX.wechat.onMenuShareQQ({
             title: currShareData.title, // 分享标题
             desc: currShareData.desc, // 分享描述
-            link: currShareData.link, // 分享链接
+            link: _link.replace("hmsr={from}","hmsr=qq"), // 分享链接
             imgUrl: currShareData.imgUrl, // 分享图标
             success: function () {
                 currShareData.success && currShareData.success();
