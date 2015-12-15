@@ -24,13 +24,13 @@
         }
     };
     var isDebug = false;
-    var isInit=false;
-    var _currShareData=null;
+    var isInit = false;
+    var _currShareData = null;
     var initcallback = null;
-    var wechatSdkUrl="http://res.wx.qq.com/open/js/jweixin-1.0.0.js";
-    WX.wechat=null;
-    WX.setWechat= function (wechat) {
-        WX.wechat=wechat;
+    var wechatSdkUrl = "http://res.wx.qq.com/open/js/jweixin-1.0.0.js";
+    WX.wechat = null;
+    WX.setWechat = function (wechat) {
+        WX.wechat = wechat;
     };
     /**
      * 分享初始化
@@ -46,15 +46,15 @@
         isDebug = !!debug;
         var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
 
-        if("function" == typeof define){
+        if ("function" == typeof define) {
             require(["http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=define&url=" + encodeURIComponent(location.href.replace(location.hash, ""))], function (data) {
                 WX.config(data);
             });
         }
-        else if(window.wx){
+        else if (window.wx) {
             WX.setWechat(window.wx);
             loadScript(url);
-        }else{
+        } else {
             loadScript(wechatSdkUrl, function () {
                 WX.setWechat(window.wx);
                 loadScript(url);
@@ -63,8 +63,8 @@
 
     };
     WX.config = function (d) {
-        if (d.ret != 200){
-            if(isDebug)alert(JSON.stringify(d));
+        if (d.ret != 200) {
+            if (isDebug)alert(JSON.stringify(d));
             return;
         }
         WX.wechat.config({
@@ -159,7 +159,7 @@
                     WX.wechat.showMenuItems({
                         menuList: ['menuItem:profile', 'menuItem:addContact']
                     });
-                    isInit=true;
+                    isInit = true;
                     WX.setshare(_currShareData);
                 }
             });
@@ -168,53 +168,117 @@
 
 
     WX.setshare = function (d) {
-        _currShareData=  d || {};
 
-        if(!isInit){
+        var hmsrpyq = "hmsr=%E5%BE%AE%E4%BF%A1%E5%A5%BD%E5%8F%8B";//微信朋友圈
+
+        var hmsrhy = "hmsr=%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88";//微信好友
+
+        _currShareData = d || {};
+
+        if (!isInit) {
             return;
         }
-        var currShareData=extend(shareData, _currShareData);
-        // 分享到微信朋友圈
-        WX.wechat.onMenuShareTimeline({
-            title: currShareData.title,
-            link: currShareData.link,
-            imgUrl: currShareData.imgUrl,
-            success: function () {
-                currShareData.success && currShareData.success();
-                try {
-                    _hmt.push(['_trackEvent', "分享成功", '分享到朋友圈']);
-                } catch (e) {
+
+        var currShareData = extend(shareData, _currShareData);
+
+        if (currShareData.link.indexOf("?") != -1) {
+
+            //if (currShareData.link.indexOf("#") != -1) {
+            //
+            //    currShareData.link.replace("#", '&') + hmsrpyq;
+            //}
+
+            // 分享到微信朋友圈
+            WX.wechat.onMenuShareTimeline({
+                title: currShareData.title,
+                link: currShareData.link+ "&" + hmsrpyq,
+                imgUrl: currShareData.imgUrl,
+                success: function () {
+                    currShareData.success && currShareData.success();
+                    try {
+                        _hmt.push(['_trackEvent', "分享成功", '分享到朋友圈']);
+                    } catch (e) {
+                    }
+                },
+                cancel: function () {
+                    currShareData.cancel && currShareData.cancel();
+                    try {
+                        _hmt.push(['_trackEvent', "取消分享", '取消分享']);
+                    } catch (e) {
+                    }
                 }
-            },
-            cancel: function () {
-                currShareData.cancel && currShareData.cancel();
-                try {
-                    _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                } catch (e) {
+            });
+
+            // 发送给指定微信好友
+            WX.wechat.onMenuShareAppMessage({
+                title: currShareData.title,
+                desc: currShareData.desc,
+                link: currShareData.link+"&" + hmsrhy,
+                imgUrl: currShareData.imgUrl,
+                success: function () {
+                    currShareData.success && currShareData.success();
+                    try {
+                        _hmt.push(['_trackEvent', "分享成功", '分享给好友']);
+                    } catch (e) {
+                    }
+                },
+                cancel: function () {
+                    currShareData.cancel && currShareData.cancel();
+                    try {
+                        _hmt.push(['_trackEvent', "取消分享", '取消分享']);
+                    } catch (e) {
+                    }
                 }
-            }
-        });
-        // 发送给指定微信好友
-        WX.wechat.onMenuShareAppMessage({
-            title: currShareData.title,
-            desc: currShareData.desc,
-            link: currShareData.link,
-            imgUrl: currShareData.imgUrl,
-            success: function () {
-                currShareData.success && currShareData.success();
-                try {
-                    _hmt.push(['_trackEvent', "分享成功", '分享给好友']);
-                } catch (e) {
+            });
+
+        } else {
+
+            // 发送给指定微信好友
+            WX.wechat.onMenuShareAppMessage({
+                title: currShareData.title,
+                desc: currShareData.desc,
+                link: currShareData.link+"?" + hmsrhy,
+                imgUrl: currShareData.imgUrl,
+                success: function () {
+                    currShareData.success && currShareData.success();
+                    try {
+                        _hmt.push(['_trackEvent', "分享成功", '分享给好友']);
+                    } catch (e) {
+                    }
+                },
+                cancel: function () {
+                    currShareData.cancel && currShareData.cancel();
+                    try {
+                        _hmt.push(['_trackEvent', "取消分享", '取消分享']);
+                    } catch (e) {
+                    }
                 }
-            },
-            cancel: function () {
-                currShareData.cancel && currShareData.cancel();
-                try {
-                    _hmt.push(['_trackEvent', "取消分享", '取消分享']);
-                } catch (e) {
+            });
+
+
+            // 分享到微信朋友圈
+            WX.wechat.onMenuShareTimeline({
+                title: currShareData.title,
+                link: currShareData.link+"?" + hmsrpyq,
+                imgUrl: currShareData.imgUrl,
+                success: function () {
+                    currShareData.success && currShareData.success();
+                    try {
+                        _hmt.push(['_trackEvent', "分享成功", '分享到朋友圈']);
+                    } catch (e) {
+                    }
+                },
+                cancel: function () {
+                    currShareData.cancel && currShareData.cancel();
+                    try {
+                        _hmt.push(['_trackEvent', "取消分享", '取消分享']);
+                    } catch (e) {
+                    }
                 }
-            }
-        });
+            });
+        }
+
+
         WX.wechat.onMenuShareQQ({
             title: currShareData.title, // 分享标题
             desc: currShareData.desc, // 分享描述
@@ -238,6 +302,7 @@
     };
 
     function loadScript(url, callback) {
+
         var script = document.createElement("script");
         script.type = "text/javascript";
         if (script.readyState) { //IE
@@ -259,17 +324,19 @@
         });
 
     }
-    var isDOMReady=false;
-    function DOMReady(callback){
-        if(isDOMReady){
+
+    var isDOMReady = false;
+
+    function DOMReady(callback) {
+        if (isDOMReady) {
             typeof (callback) === "function" && callback();
-        }else{
+        } else {
             setTimeout(function () {
-                if(document.body){
-                    isDOMReady=true;
+                if (document.body) {
+                    isDOMReady = true;
                 }
                 DOMReady(callback);
-            },1);
+            }, 1);
         }
 
     }
@@ -287,7 +354,7 @@
         return result;
     }
 
-    "function" == typeof define ? define([wechatSdkUrl],function (wx) {
+    "function" == typeof define ? define([wechatSdkUrl], function (wx) {
         WX.setWechat(wx);
         return WX;
     }) : (function () {
