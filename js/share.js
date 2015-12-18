@@ -12,7 +12,7 @@
 !(function () {
 
     var WX = {
-        version: '2.0.4'
+        version: '2.0.5'
     };
     var shareData = {
         title: '',
@@ -151,7 +151,7 @@
         // 分享到微信朋友圈
         WX.wechat.onMenuShareTimeline({
             title: currShareData.title,
-            link: _link.replace("hmsr={from}", 'hmsr=%E5%BE%AE%E4%BF%A1%E5%A5%BD%E5%8F%8B'),
+            link: _link.replace("hmsr={from}", 'hmsr=%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88'),
             imgUrl: currShareData.imgUrl,
             success: function () {
                 currShareData.success && currShareData.success();
@@ -173,7 +173,7 @@
         WX.wechat.onMenuShareAppMessage({
             title: currShareData.title,
             desc: currShareData.desc,
-            link: _link.replace("hmsr={from}", 'hmsr=%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88'),
+            link: _link.replace("hmsr={from}", 'hmsr=%E5%BE%AE%E4%BF%A1%E5%A5%BD%E5%8F%8B'),
             imgUrl: currShareData.imgUrl,
             success: function () {
                 currShareData.success && currShareData.success();
