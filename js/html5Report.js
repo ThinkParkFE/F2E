@@ -8,10 +8,10 @@
 
     var html5Report=function () {
            var report =new Image();
-            report.src="//api.menma.cc/Public/v1/?service=Report.Add&width="+window.screen.width+"&height="+window.screen.height+"&devicePixelRatio="+window.devicePixelRatio+"&ua="+navigator.userAgent
+            report.src="//api.menma.me/v1/?service=Report.Add&width="+window.screen.width+"&height="+window.screen.height+"&devicePixelRatio="+window.devicePixelRatio+"&ua="+navigator.userAgent
     };
 
-    html5Report.version="0.0.2";
+    html5Report.version="0.0.3";
 
     "function" == typeof define ? define(function() {
         return html5Report
