@@ -28,7 +28,7 @@
     var isInit = false;
     var _currShareData = null;
     var initcallback = null;
-    var wechatSdkUrl = "http://res.wx.qq.com/open/js/jweixin-1.0.0.js";
+    var wechatSdkUrl = "//res.wx.qq.com/open/js/jweixin-1.0.0.js";
     WX.wechat = null;
     WX.setWechat = function (wechat) {
         WX.wechat = wechat;
@@ -82,10 +82,10 @@
         debug = debug || isDebug;
         initcallback = typeof(callback) === "function" ? callback : null;
         isDebug = !!debug;
-        var url = "http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
+        var url = "http://wechat.thinkpark.com.cn/wechat-service/getshare.php?t=" + new Date().getTime() + "&callback=tp.wx.config&url=" + encodeURIComponent(location.href.replace(location.hash, ""));
 
         if ("function" == typeof define) {
-            require(["http://www.socialpark.com.cn/wechat/getshare.php?t=" + new Date().getTime() + "&callback=define&url=" + encodeURIComponent(location.href.replace(location.hash, ""))], function (data) {
+            require(["http://wechat.thinkpark.com.cn/wechat-service/getshare.php?t=" + new Date().getTime() + "&callback=define&url=" + encodeURIComponent(location.href.replace(location.hash, ""))], function (data) {
                 WX.config(data);
             });
         }
